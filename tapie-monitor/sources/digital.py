@@ -110,6 +110,9 @@ DONE_WORDS = ["racheté", "a été repris", "reprise par", "übernommen", "über
               "was acquired", "acquired by", "bought by", "sold to", "takes over", "took over",
               "rilevat", "adquirid", "overgenomen", "převzal", "koupil", "koupila"]
 
+ROUNDUP_WORDS = ["+++", "ticker", "newsletter", "roundup", "round-up", "weekly", "wochenrückblick",
+                 "this week in", "news in brief", "in kürze", "en bref"]
+
 # Pozitivní zprávy (investice, růst) – nejsou příležitost k převzetí
 FUNDING_WORDS = [
     "secures", "raises", "raised", "funding round", "series a", "series b", "series c", "seed round",
@@ -343,6 +346,8 @@ def run(seen, fps):
                 # celé texty z RSS zmiňují „struggle“ obecně (Conlio: zpráva o investici).
                 head = f" {it['title'].lower()} {it['summary'][:400].lower()} "
                 tlow = f" {it['title'].lower()} "
+                if any(x in tlow for x in ROUNDUP_WORDS):
+                    continue  # souhrnné přehledy více firem (#StartupTicker, newsletter) – ne jeden případ
                 if any(f in tlow for f in FUNDING_WORDS) and not any(
                         k in tlow for k in STRONG + BUYER_CALL + SYMBOLIC):
                     continue  # zpráva o získání investice / růstu – ne příležitost
