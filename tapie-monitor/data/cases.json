@@ -1172,5 +1172,17 @@
   "procedure": "insolvence / prodej / ukončení („insolvenz“)",
   "rating": "A",
   "size": "tržby/ARR ≈ 16,6 mil,"
+ },
+ {
+  "country": "FR",
+  "date": "2026-11-08",
+  "grades": "AAA",
+  "key": "DIGI:6464bf12841a3068",
+  "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOeE5ka3Q2eWIzSVEtLXBKZTRZTXZKRlJ1WEZIc1BVQlROLWZXcy1tWDZ2Z0V4Z1owR25qeC1SOXdUMGtvMG1CcHNSVjIzT2ZCTjNaVUtEazhtT3JxSC1PR1NWTVZZWDFrbkxSTlNyZ1dVNTBIc29DMW9xbGxPM3Jxai14SFpLeVk4S3hETWZzWUtCaVNUV2JMVERqbS0wRVZmTTlGUUZZenRFUGs?oc=5",
+  "module": "DIGITAL",
+  "name": "La plateforme de seconde main Smala en quête d'un repreneur",
+  "procedure": "správce hledá kupce („repreneur“)",
+  "rating": "A",
+  "size": "?"
  }
 ]
