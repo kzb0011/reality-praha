@@ -109,11 +109,11 @@ RK_SELLERS = [
     "ladislav burian", "realbrána", "realbrana",
     "ideální nájemce", "dumrealit", "jan paschke", "paschke", "hvb real estate", "finpos", "aleš doubek", "makers reality", "gepard",
     "vlasta marklová", "žalmánek", "váš konzultant realit", "realityspolu", "reality spolu", "petráčková",
-    "next reality", "karel zajac", "zoom", "bohemian estates", "broker consulting", "pavelková", "jiří beneš", "petr schejbal", "vladimír kremel", "vladimir kremel", "jaroslav čermák", "jaroslav cermak", "femida", "martin petlach", "adam horák", "adam horak",
+    "next reality", "karel zajac", "zoom", "bohemian estates", "broker consulting", "pavelková", "jiří beneš", "petr schejbal", "vladimír kremel", "vladimir kremel", "jaroslav čermák", "jaroslav cermak", "femida", "martin petlach", "adam horák", "adam horak", "marek bijok",
 ]
 
 # Bazoš ID prodávajícího (idphone) nahlášených realitek – chytí je i pod jiným jménem
-RK_SELLER_IDS = {"19659032", "19127202", "19056743", "19006547", "19623771", "21100492", "19135889", "19165354", "19117937", "19208053"}   # Pavelková, Jiří Beneš, TM (2×), Petr Schejbal, Vladimír Kremel, Jaroslav Čermák, Femida, Martin Petlach, Adam Horák
+RK_SELLER_IDS = {"19659032", "19127202", "19056743", "19006547", "19623771", "21100492", "19135889", "19165354", "19117937", "19208053", "19151196"}   # Pavelková, Jiří Beneš, TM (2×), Petr Schejbal, Vladimír Kremel, Jaroslav Čermák, Femida, Martin Petlach, Adam Horák, Marek Bijok
 # Krátká jména RK – musí se shodovat s celým jménem prodávajícího (v textu se nehledají)
 RK_SELLERS_EXACT = {"tm"}
 
