@@ -27,6 +27,12 @@ BAZOS_SEARCHES = [                                  # (akce, typ = rubrika na Ba
 FIELD_RE = r"\bpol[eií]\b|\bpolí\b|orn[áéou]\w* půd|zemědělsk|\blouk|\bles\b|\blesy\b|lesní|lesů|pastvin|travní porost|\bttp\b"
 BUILD_RE = r"stavební|k bydlení|pro bydlení|pozemky/bydlení|ke stavbě|rodinn"
 POZEMEK_MIN = 1_000_000  # prodej pozemků až od této ceny
+# Bob nechce: sruby, mobilheimy / mobilní a modulové domy, nemovitosti v zahraničí
+UNWANTED_RE = r"\bsrub|mobilheim|mobil home|mobilní d[ůo]m|mobilní domek|modulov\w* d[ůo]m|maringotk|tiny ?house"
+ABROAD_RE = (r"v zahraničí|chorvatsk[oua]\b|španělsk[oua]\b|\bitáli[ei]\b|bulharsk[oua]\b|řeck[oua]\b|\begypt|dubaj|emirát"
+             r"|tureck[oua]\b|\bkypr|černá hora|černé hoře|thajsk[oua]\b|\bbali\b|albáni|portugalsk[oua]\b"
+             r"|\bu moře|od moře|k moři|na pláži|costa |istri[ie]|dalmáci|slunečné pobřeží|chalkidik|tenerif|kanárs")
+PRONAJEM_MIN_MIMO_PRAHU = 15_000   # pronájmy mimo Prahu až od této ceny (bez ceny se nechávají)
 # Posílá se: Praha (PSČ 1xx xx) + okolí obcí podle prvních 3 číslic PSČ (pošt. obvod ≈ obec + ~10 km):
 NEAR_PSC = {
     "250",  # Brandýs n. L., Úvaly, Čelákovice, Odolena Voda, Klecany, Zdiby
@@ -273,6 +279,10 @@ def bazos_page(akce, typ, offset, params, accept):
         blob = f"{title} {desc}".lower()
         if typ_i == "pozemek" and re.search(FIELD_RE, blob) and not re.search(BUILD_RE, blob):
             continue                              # pole / les / louka – nezajímá
+        if re.search(UNWANTED_RE, blob) or re.search(ABROAD_RE, blob):
+            continue                              # srub / mobilheim / zahraničí – nezajímá
+        if akce == "pronajem" and not (psc or "").startswith("1") and price and price < PRONAJEM_MIN_MIMO_PRAHU:
+            continue                              # levný pronájem mimo Prahu – nezajímá
         if typ_i == "pozemek" and akce == "prodej" and price and price < POZEMEK_MIN:
             continue                              # levné pozemky nezajímají (bez ceny se nechávají)
         out.append(enrich({
