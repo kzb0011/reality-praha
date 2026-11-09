@@ -47,7 +47,7 @@ vyřadí realitky a poptávky a **soukromníky pošle do Telegramu**. Cílem je,
   - Změna schématu hledání (`SCHEME` v `data.json`) → první běh jen uloží (`first_load`), nic nepošle.
   - Detail inzerátu (`bazos_detail`) dává jméno prodávajícího, celý popis, `seller_id` (idphone).
   - Inzeráty bez načteného jména čekají (`pending`, max. 3 běhy), pak se tiše zahodí – nikdy se neposílají bez posouzení.
-  - Poptávky (titulek začíná Hledám/Koupím/Poptávám/Sháním) se přeskakují – Bob je nechce.
+  - Poptávky (titulek začíná Hledám/Koupím/Poptávám/Poptávka/Sháním) se přeskakují – Bob je nechce.
 - **UlovDomov**: implementováno, ale **vypnuto** (`UD_ENABLED = False`) – Bob: skoro samé realitky.
   API `ud.api.ulovdomov.cz/v1/offer/find` (POST, bounds Prahy), kontakt `www.ulovdomov.cz/fe-api/offer/contact-info/{id}` (`is_private_landlord`).
 - **Zamítnuté zdroje (neřešit znovu)**: Sbazar a Bezrealitky (robots.txt zakazuje), Sreality (podmínky), Realingo (zakazuje detaily/API),
@@ -60,9 +60,10 @@ vyřadí realitky a poptávky a **soukromníky pošle do Telegramu**. Cílem je,
 ## Filtr realitek (`classify` → `rk` / `soukromy` / `nejiste`)
 Posílá se jen `soukromy` a `nejiste` (`SELLER_FILTER = "rk_ven"`). Vyřadí se jako RK, pokud:
 - jméno je na seznamu `RK_SELLERS` (Bobův seznam – M&M, Paschke, HVB, Finpos, Next Reality, ZOOM, Bohemian Estates, Ideální nájemce,
-  Dumrealit, Ladislav Burian/REALBrána, Pavelková, Jiří Beneš, Petr Schejbal, Vladimír Kremel, Jaroslav Čermák, Femida, Martin Petlach, Adam Horák, Marek Bijok…; krátká jména jako „TM" v `RK_SELLERS_EXACT` (shoda celého jména); navíc `RK_SELLER_IDS` = Bazoš idphone nahlášených RK, chytí je i pod jiným jménem; když Bob nahlásí další, přidej sem),
+  Dumrealit, Ladislav Burian/REALBrána, Pavelková, Jiří Beneš, Petr Schejbal, Vladimír Kremel, Jaroslav Čermák, Femida, Martin Petlach, Adam Horák, Marek Bijok, Karel Budín…; krátká jména jako „TM" v `RK_SELLERS_EXACT` (shoda celého jména); navíc `RK_SELLER_IDS` = Bazoš idphone nahlášených RK, chytí je i pod jiným jménem; když Bob nahlásí další, přidej sem),
 - jméno obsahuje firmu (`Jméno - Firma`, čárku, s.r.o./spol., `…Real/Reality/Estate/Invest`, `REAL…`),
 - text obsahuje `NO_RK_WORDS` („RK nevolat", i „R.K nevolat", „R. K." apod. – Bob tyto majitele nechce oslovovat),
+- text obsahuje podpis „RK Jméno Příjmení“ (např. „RK Karel Budín“),
 - text obsahuje silné RK výrazy (`RK_WORDS`: provize, makléř, zprostředkuje, výhradní zastoupení, ID nabídky, ev. č., …webrealit.cz…),
 - stejný prodávající/telefon má ≥ 3 inzeráty (`RK_MIN_LISTINGS`), nebo byl dříve vyřazen (paměť `RK_KNOWN`, `RK_PHONES` –
   **jen z jasných důvodů**, ne z jednorázového nálezu slova v textu).

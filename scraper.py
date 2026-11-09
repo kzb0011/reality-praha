@@ -109,11 +109,11 @@ RK_SELLERS = [
     "ladislav burian", "realbrána", "realbrana",
     "ideální nájemce", "dumrealit", "jan paschke", "paschke", "hvb real estate", "finpos", "aleš doubek", "makers reality", "gepard",
     "vlasta marklová", "žalmánek", "váš konzultant realit", "realityspolu", "reality spolu", "petráčková",
-    "next reality", "karel zajac", "zoom", "bohemian estates", "broker consulting", "pavelková", "jiří beneš", "petr schejbal", "vladimír kremel", "vladimir kremel", "jaroslav čermák", "jaroslav cermak", "femida", "martin petlach", "adam horák", "adam horak", "marek bijok",
+    "next reality", "karel zajac", "zoom", "bohemian estates", "broker consulting", "pavelková", "jiří beneš", "petr schejbal", "vladimír kremel", "vladimir kremel", "jaroslav čermák", "jaroslav cermak", "femida", "martin petlach", "adam horák", "adam horak", "marek bijok", "karel budín", "karel budin",
 ]
 
 # Bazoš ID prodávajícího (idphone) nahlášených realitek – chytí je i pod jiným jménem
-RK_SELLER_IDS = {"19659032", "19127202", "19056743", "19006547", "19623771", "21100492", "19135889", "19165354", "19117937", "19208053", "19151196"}   # Pavelková, Jiří Beneš, TM (2×), Petr Schejbal, Vladimír Kremel, Jaroslav Čermák, Femida, Martin Petlach, Adam Horák, Marek Bijok
+RK_SELLER_IDS = {"19659032", "19127202", "19056743", "19006547", "19623771", "21100492", "19135889", "19165354", "19117937", "19208053", "19151196", "19194521"}   # Pavelková, Jiří Beneš, TM (2×), Petr Schejbal, Vladimír Kremel, Jaroslav Čermák, Femida, Martin Petlach, Adam Horák, Marek Bijok, Karel Budín („Martina“)
 # Krátká jména RK – musí se shodovat s celým jménem prodávajícího (v textu se nehledají)
 RK_SELLERS_EXACT = {"tm"}
 
@@ -266,7 +266,7 @@ def bazos_page(akce, typ, offset, params, accept):
         if not accept(psc, price):
             continue
         title = a.get_text(strip=True)
-        if re.match(r"\s*(hled[aá]m|koup[ií]m|popt[aá]v[aá]m|sh[aá]n[ií]m)(e|me)?\b", title, re.I):
+        if re.match(r"\s*(hled[aá]m|koup[ií]m|popt[aá]v\w*|sh[aá]n[ií]m)(e|me)?\b", title, re.I):
             continue                              # poptávka, ne nabídka
         full = box.get_text(" ", strip=True)
         d = re.search(r"\[(\d{1,2})\.(\d{1,2})\.\s?(\d{4})\]", full)
@@ -405,6 +405,10 @@ def classify(item, seller_counts):
     sid = item.get("seller_id") or seller
     if sid and seller_counts.get(sid, 0) >= RK_MIN_LISTINGS:
         return "rk", f"{seller_counts[sid]} inzerátů od stejného prodávajícího"
+    raw_text = " ".join(str(item.get(k) or "") for k in ("title", "desc", "desc_full"))
+    m = re.search(r"\bR\.?\s?K\.?\s+[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž]+\s+[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž]+", raw_text)
+    if m:                                        # „RK Karel Budín" = makléř se podepsal
+        return "rk", f"text inzerátu ({m.group(0)})"
     priv = [w for w in PRIVATE_WORDS if re.search(w, text)]
     clean = text
     for w in PRIVATE_WORDS:                      # "bez RK" nesmí spustit RK
