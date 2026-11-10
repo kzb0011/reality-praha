@@ -1184,5 +1184,41 @@
   "procedure": "správce hledá kupce („repreneur“)",
   "rating": "A",
   "size": "?"
+ },
+ {
+  "country": "CZ",
+  "date": "2026-11-10",
+  "grades": "AAA",
+  "key": "CZ:INS 19826/2026",
+  "link": "https://isir.justice.cz/isir/ueu/vysledek_lustrace.do?ic=26327236&aktualnost=AKTUALNI_I_UKONCENA",
+  "module": "FIRMA",
+  "name": "MICHEL BLUMEN s.r.o.",
+  "procedure": "konkurs",
+  "rating": "A",
+  "size": "25–49 zaměstnanců"
+ },
+ {
+  "country": "CZ",
+  "date": "2026-11-10",
+  "grades": "AAA",
+  "key": "CZ:INS 19821/2026",
+  "link": "https://isir.justice.cz/isir/ueu/vysledek_lustrace.do?ic=46509844&aktualnost=AKTUALNI_I_UKONCENA",
+  "module": "FIRMA",
+  "name": "KURY spol. s r.o.",
+  "procedure": "konkurs",
+  "rating": "A",
+  "size": "10–19 zaměstnanců"
+ },
+ {
+  "country": "FR",
+  "date": "2026-11-10",
+  "grades": "AAA",
+  "key": "DIGI:aba000f8956e7996",
+  "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxORGtWbmhVdDhDYkJlMDhTeHdCSFk5QXh3WmcwUHVIRXh1ZUtpOU1XVUI4a3dlY1JpcExnUHlhaG9vUGZXX2JvRUIxUHV5ZVJraVZYUzc5Y3dMZ1lYUzl4NDlsaGVxeFg0M2FzeWhBcTRrd2UtWEJHajZsbnVaX0tiMV9ETV9hSVZMM0dTaGFkdlJ2M29GTWtJTg?oc=5",
+  "module": "DIGITAL",
+  "name": "Marckolsheim. La commune acquiert deux parcelles à l’euro symbolique",
+  "procedure": "💶 převzetí za symbolickou cenu – Tapie style („euro symbolique“)",
+  "rating": "A",
+  "size": "?"
  }
 ]
