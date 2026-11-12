@@ -109,11 +109,11 @@ RK_SELLERS = [
     "ladislav burian", "realbrána", "realbrana",
     "ideální nájemce", "dumrealit", "jan paschke", "paschke", "hvb real estate", "finpos", "aleš doubek", "makers reality", "gepard",
     "vlasta marklová", "žalmánek", "váš konzultant realit", "realityspolu", "reality spolu", "petráčková",
-    "next reality", "karel zajac", "zoom", "bohemian estates", "broker consulting", "pavelková", "jiří beneš", "petr schejbal", "vladimír kremel", "vladimir kremel", "jaroslav čermák", "jaroslav cermak", "femida", "martin petlach", "adam horák", "adam horak", "marek bijok", "karel budín", "karel budin", "martin kršňák", "martin krsnak", "luboš rezek", "lubos rezek", "luboš řezek", "jana barčuková", "jana barcukova",
+    "next reality", "karel zajac", "zoom", "bohemian estates", "broker consulting", "pavelková", "jiří beneš", "petr schejbal", "vladimír kremel", "vladimir kremel", "jaroslav čermák", "jaroslav cermak", "femida", "martin petlach", "adam horák", "adam horak", "marek bijok", "karel budín", "karel budin", "martin kršňák", "martin krsnak", "luboš rezek", "lubos rezek", "luboš řezek", "jana barčuková", "jana barcukova", "tomáš tvoroch", "tomas tvoroch", "tomáš tvaroh", "rk evropa",
 ]
 
 # Bazoš ID prodávajícího (idphone) nahlášených realitek – chytí je i pod jiným jménem
-RK_SELLER_IDS = {"19659032", "19127202", "19056743", "19006547", "19623771", "21100492", "19135889", "19165354", "19117937", "19208053", "19151196", "19194521", "19057417", "19058815", "19135727"}   # Pavelková, Jiří Beneš, TM (2×), Petr Schejbal, Vladimír Kremel, Jaroslav Čermák, Femida, Martin Petlach, Adam Horák, Marek Bijok, Karel Budín („Martina“), Martin Kršňák, Luboš Rezek, Jana Barčuková
+RK_SELLER_IDS = {"19659032", "19127202", "19056743", "19006547", "19623771", "21100492", "19135889", "19165354", "19117937", "19208053", "19151196", "19194521", "19057417", "19058815", "19135727", "19180520"}   # Pavelková, Jiří Beneš, TM (2×), Petr Schejbal, Vladimír Kremel, Jaroslav Čermák, Femida, Martin Petlach, Adam Horák, Marek Bijok, Karel Budín („Martina“), Martin Kršňák, Luboš Rezek, Jana Barčuková, Tomáš Tvoroch (RK Evropa)
 # Krátká jména RK – musí se shodovat s celým jménem prodávajícího (v textu se nehledají)
 RK_SELLERS_EXACT = {"tm"}
 
@@ -388,6 +388,8 @@ def classify(item, seller_counts):
         return "rk", f"na seznamu RK ({item.get('seller')})"
     if item.get("seller_id") and str(item["seller_id"]) in RK_SELLER_IDS:
         return "rk", f"nahlášená RK (ID {item['seller_id']})"
+    if re.search(r"(?<!\w)(rk|r\.k\.?|realitka|reality)(?!\w)", seller):
+        return "rk", f"jméno firmy ({item.get('seller')})"
     if re.search(r"\s[-–|]\s*\S", item.get("seller") or ""):
         return "rk", f"jméno s firmou ({item.get('seller')})"
     if re.search(r"\w(real|reality|estate|invest)\b|,", seller) or \
