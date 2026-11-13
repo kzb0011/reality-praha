@@ -1256,5 +1256,17 @@
   "procedure": "konkurs",
   "rating": "A",
   "size": "25–49 zaměstnanců"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-13",
+  "grades": "AAA",
+  "key": "APP:1191337894:drop",
+  "link": "https://apps.apple.com/de/app/photoleap-ki-bildbearbeitung/id1191337894?uo=4",
+  "module": "APP",
+  "name": "Photoleap KI-Bildbearbeitung",
+  "procedure": "pokles v EU žebříčcích z #11 na #75",
+  "rating": "B",
+  "size": "15 911 hodnocení v App Store (obchod DE)"
  }
 ]
