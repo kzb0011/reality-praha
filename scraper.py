@@ -131,7 +131,7 @@ RK_WEAK = [r"exkluziv", r"\brk\b", r"nabízíme (vám )?(k )?(prodeji|pronájmu|
 
 PRIVATE_WORDS = [r"bez rk", r"nejsem rk", r"ne ?rk", r"přímo od majitele", r"bez proviz\w*", r"provize se neplatí", r"bez poplatku rk", r"od majitele", r"jsem majitel", r"soukrom[áý] osoba", r"bez realitky",
                  r"bez zprostředk\w*", r"bez realitní\w* kancelář\w*", r"žádn\w* proviz\w*", r"neplatí\w* (žádnou )?proviz\w*",
-                 r"nejsem (realitk\w*|makléř\w*)", r"přímému zájemci", r"pouze přím\w* zájem\w*"]
+                 r"nejsem (realitk\w*|makléř\w*)", r"přímému zájemci", r"bez makléř\w*", r"pouze přím\w* zájem\w*"]
 # ---------------------------------------------------------------------------
 
 HEADERS = {
@@ -361,11 +361,17 @@ def bazos_phone(item, soup, html):
 
 
 RK_KNOWN, RK_PHONES = set(), set()
+# z čeho si hlídač pamatuje prodávajícího jako RK (ne z „dříve vyřazen“ – to by se samo řetězilo, ne ze slova v textu)
+STRONG_RK_REASONS = ("na seznamu RK", "nahlášená RK", "jméno s firmou", "jméno firmy", "jméno prodávajícího", "telefon patří")
 
 
 def _norm_phone(ph):
     d = re.sub(r"\D", "", str(ph))
     return d[-9:] if len(d) >= 9 else d
+
+
+def _norm_title(t):
+    return re.sub(r"[^a-z0-9á-ž]+", " ", (t or "").lower()).strip()
 
 
 def classify(item, seller_counts):
@@ -376,7 +382,7 @@ def classify(item, seller_counts):
         if item.get("ud_private") is False:
             return "rk", "UlovDomov: není soukromý majitel"
     text = " ".join(str(item.get(k) or "") for k in ("title", "desc", "desc_full")).lower()
-    seller = (item.get("seller") or "").lower()
+    seller = re.sub(r"\s+", " ", (item.get("seller") or "")).strip().lower()
     for w in NO_RK_WORDS:
         if re.search(w, text):
             return "rk", "majitel nechce RK"
@@ -801,6 +807,19 @@ def probe():
         log(f"[probe] CHYBA {e}")
 
 
+def find_repost(i, store):
+    """Stejný prodávající znovu vložil stejný inzerát (nové ID na Bazoši) – už jsme ho posílali."""
+    sid = i.get("seller_id") or (i.get("seller") or "").lower()
+    if not sid:
+        return None
+    t = _norm_title(i.get("title"))
+    for k, v in store.items():
+        if k != i["key"] and (v.get("seller_id") or (v.get("seller") or "").lower()) == sid \
+                and _norm_title(v.get("title")) == t and v.get("akce") == i.get("akce"):
+            return k
+    return None
+
+
 def find_duplicate(i, store):
     """Stejný byt z jiného webu: shoda typu, dispozice, plochy ±1 m², ceny ±2 % a čtvrti (nebo telefonu)."""
     for k, v in store.items():
@@ -840,10 +859,9 @@ def main():
     # paměť realitek: jména (aspoň 2 slova) a telefony, které už byly jednou vyřazené jako RK
     for v in store.values():
         # pamatovat si jen jasné RK – ne jednorázový nález slova v textu (mohl to být soukromník)
-        if v.get("seller_type") == "rk" and v.get("seller_reason") != "majitel nechce RK" \
-                and not (v.get("seller_reason") or "").startswith("text inzerátu"):
+        if v.get("seller_type") == "rk" and (v.get("seller_reason") or "").startswith(STRONG_RK_REASONS):
             if v.get("seller") and len(v["seller"].split()) >= 2:
-                RK_KNOWN.add(v["seller"].lower())
+                RK_KNOWN.add(re.sub(r"\s+", " ", v["seller"]).strip().lower())
             if v.get("phone"):
                 RK_PHONES.add(_norm_phone(v["phone"]))
 
@@ -869,14 +887,16 @@ def main():
             elif not (i["source"] == "ulovdomov" and ud_first and i["key"] not in store):
                 ulovdomov_contact(i)
         log(f"[bazos] načteno detailů: {min(len(todo), MAX_DETAILS)}, čeká na příští běh: {max(0, len(todo) - MAX_DETAILS)}")
-    seller_counts = {}
+    # kolik RŮZNÝCH inzerátů má prodávající (stejný inzerát vložený znovu = 1)
+    _seen_titles = {}
     for v in list(store.values()) + [i for i in found if i["key"] not in store]:
+        t = _norm_title(v.get("title"))
         sid = v.get("seller_id") or (v.get("seller") or "").lower()
         if sid:
-            seller_counts[sid] = seller_counts.get(sid, 0) + 1
+            _seen_titles.setdefault(sid, set()).add(t)
         if v.get("phone"):
-            ph = "tel:" + _norm_phone(v["phone"])
-            seller_counts[ph] = seller_counts.get(ph, 0) + 1
+            _seen_titles.setdefault("tel:" + _norm_phone(v["phone"]), set()).add(t)
+    seller_counts = {k: len(ts) for k, ts in _seen_titles.items()}
 
     pool = dict(store)                           # pro hledání duplicit i v rámci jednoho běhu
 
@@ -900,7 +920,7 @@ def main():
             i["seller_type"], i["seller_reason"] = classify(i, seller_counts)
         i["pending"] = False
         i.pop("desc_full", None)
-        dup = find_duplicate(i, pool)
+        dup = find_duplicate(i, pool) or find_repost(i, pool)
         if dup:
             i["dup_of"], i["silent"] = dup, True
         pool[i["key"]] = i
