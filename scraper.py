@@ -28,10 +28,10 @@ FIELD_RE = r"\bpol[eií]\b|\bpolí\b|orn[áéou]\w* půd|zemědělsk|\blouk|\ble
 BUILD_RE = r"stavební|k bydlení|pro bydlení|pozemky/bydlení|ke stavbě|rodinn"
 POZEMEK_MIN = 1_000_000  # prodej pozemků až od této ceny
 # Bob nechce: sruby, mobilheimy / mobilní a modulové domy, nemovitosti v zahraničí
-UNWANTED_RE = r"\bsrub|mobilheim|mobil home|mobilní d[ůo]m|mobilní domek|modulov\w* d[ůo]m|maringotk|tiny ?house"
+UNWANTED_RE = r"\bsrub|karavan|mobilheim|mobil home|mobilní d[ůo]m|mobilní domek|modulov\w* d[ůo]m|maringotk|tiny ?house"
 ABROAD_RE = (r"v zahraničí|chorvatsk[oua]\b|španělsk[oua]\b|\bitáli[ei]\b|bulharsk[oua]\b|řeck[oua]\b|\begypt|dubaj|emirát"
              r"|tureck[oua]\b|\bkypr|černá hora|černé hoře|thajsk[oua]\b|\bbali\b|albáni|portugalsk[oua]\b"
-             r"|\bu moře|od moře|k moři|na pláži|costa |istri[ie]|dalmáci|slunečné pobřeží|chalkidik|tenerif|kanárs")
+             r"|hurghad|sahl hasheesh|\bu moře|od moře|k moři|na pláži|costa |istri[ie]|dalmáci|slunečné pobřeží|chalkidik|tenerif|kanárs")
 PRONAJEM_MIN_MIMO_PRAHU = 15_000   # pronájmy mimo Prahu až od této ceny (bez ceny se nechávají)
 # Posílá se: Praha (PSČ 1xx xx) + okolí obcí podle prvních 3 číslic PSČ (pošt. obvod ≈ obec + ~10 km):
 NEAR_PSC = {
@@ -366,6 +366,9 @@ def bazos_phone(item, soup, html):
 
 
 RK_KNOWN, RK_PHONES = set(), set()
+# „Jan Novák - Praha“ je místo, ne firma
+PLACE_RE = (r"(praha|praha[\s-]*\d+|praha[\s-]*(západ|východ|zapad|vychod)|brno|kladno|beroun|benešov|mělník|kolín|nymburk|říčany"
+            r"|neratovice|kralupy.*|brandýs.*|slaný|úvaly|čelákovice|roztoky|hostivice|dobříš|lysá.*|okolí prahy)")
 # z čeho si hlídač pamatuje prodávajícího jako RK (ne z „dříve vyřazen“ – to by se samo řetězilo, ne ze slova v textu)
 STRONG_RK_REASONS = ("na seznamu RK", "nahlášená RK", "jméno s firmou", "jméno firmy", "jméno prodávajícího", "telefon patří")
 
@@ -401,7 +404,8 @@ def classify(item, seller_counts):
         return "rk", f"nahlášená RK (ID {item['seller_id']})"
     if re.search(r"(?<!\w)(rk|r\.k\.?|realitka|reality)(?!\w)", seller):
         return "rk", f"jméno firmy ({item.get('seller')})"
-    if re.search(r"\s[-–|]\s*\S", item.get("seller") or ""):
+    _after = re.split(r"\s[-–|]\s*", item.get("seller") or "", maxsplit=1)
+    if len(_after) == 2 and _after[1].strip() and not re.fullmatch(PLACE_RE, _after[1].strip().lower()):
         return "rk", f"jméno s firmou ({item.get('seller')})"
     if re.search(r"\w(real|reality|estate|invest)\b|,", seller) or \
             re.search(r"\bREAL|\bReal(?:it|\b|[A-ZÁ-Ž])", item.get("seller") or ""):
