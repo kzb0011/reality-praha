@@ -64,7 +64,8 @@ Posílá se jen `soukromy` a `nejiste` (`SELLER_FILTER = "rk_ven"`). Vyřadí se
 - jméno obsahuje firmu (`Jméno - Firma`, čárku, s.r.o./spol., `…Real/Reality/Estate/Invest`, `REAL…`),
 - text obsahuje `NO_RK_WORDS` („RK nevolat", i „R.K nevolat", „R. K." apod. – Bob tyto majitele nechce oslovovat),
 - text obsahuje podpis „RK Jméno Příjmení“ (např. „RK Karel Budín“),
-- text obsahuje silné RK výrazy (`RK_WORDS`: provize, makléř, zprostředkuje, výhradní zastoupení, ID nabídky, ev. č., …webrealit.cz…),
+- text obsahuje silné RK výrazy (`RK_WORDS`; **jen „měkká“ slova z `RK_TEXT_SOFT` – provize, makléř, zprostředkování, realitní kancelář, exkluzivně… – inzerát nevyřadí,
+  pošle se jako ❔ „Možná RK – v textu …“** (Bob 14. 11.: raději víc inzerátů); vyřadí jen silné: výhradní zastoupení, ev. č., ID nabídky, web realitky, s.r.o.…; provize, makléř, zprostředkuje, výhradní zastoupení, ID nabídky, ev. č., …webrealit.cz…),
 - stejný prodávající/telefon má ≥ 3 **různé** inzeráty (`RK_MIN_LISTINGS`; znovu vložený stejný inzerát se počítá jednou),
   nebo byl dříve vyřazen (paměť `RK_KNOWN`, `RK_PHONES` – **jen ze `STRONG_RK_REASONS`**: seznam, ID, jméno firmy; ne z „dříve vyřazen“
   ani ze slova v textu, aby se chyba neřetězila).

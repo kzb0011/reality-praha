@@ -104,6 +104,11 @@ RK_WORDS = [
     r"engel ?& ?v[oö]lkers", r"lexxus", r"bidli", r"realitymix", r"sting", r"mm reality",
     r"reality\.cz", r"realit[ay]\b.*s\.r\.o", r"s\.r\.o\.", r"\bs\.? ?r\.? ?o\b", r"\bspol\.", r"a\.s\.", r"properties", r"real estate",
 ]
+# Slova v TEXTU, která samy o sobě inzerát nevyřadí – pošle se jako ❔ nejistý (Bob 14. 11.: raději víc inzerátů).
+# Silné znaky (výhradní zastoupení, ev. č., ID nabídky, názvy RK, weby realitek, s.r.o.) dál vyřazují.
+RK_TEXT_SOFT = [r"provize", r"makl", r"zprostředk", r"realitn", r"exkluziv", r"naše společnost", r"naše kancelář",
+                r"kontaktujte", r"rezervační", r"právní servis", r"financování", r"hypoteční", r"poplatek za"]
+
 # Konkrétní realitky / makléři, které chceš vždy vyřadit (stačí část jména, malá písmena)
 RK_SELLERS = [
     "ladislav burian", "realbrána", "realbrana",
@@ -423,7 +428,11 @@ def classify(item, seller_counts):
         clean = re.sub(w, " ", clean)
     hits = [w for w in RK_WORDS if re.search(w, clean)]
     if hits and not priv:
-        return "rk", "text inzerátu (" + re.sub(r"\\b|\\", "", hits[0]) + ")"
+        strong = [w for w in hits if not any(re.match(sw, w) for sw in RK_TEXT_SOFT)]
+        label = re.sub(r"\\b|\\", "", (strong or hits)[0])
+        if strong:
+            return "rk", "text inzerátu (" + label + ")"
+        return "nejiste", "jen slovo v textu (" + label + ") – možná RK"
     weak = [w for w in RK_WEAK if re.search(w, clean)]
     if weak and not priv:
         return "nejiste", "slabý znak RK v textu"
@@ -727,6 +736,10 @@ def notify(new_items):
     for i in single:                       # každý inzerát zvlášť, s náhledem fotky
         price, meta = _fmt(i)
         who = {"soukromy": "👤 Soukromník", "nejiste": "❔ Nejisté (RK nepotvrzena)"}.get(i.get("seller_type"), "")
+        m = re.match(r"jen slovo v textu \((.*)\)", i.get("seller_reason") or "")
+        if m:
+            word = re.sub(r"[\\\[\]()|?*+.]|w\*", "", re.sub(r"\[(.)[^\]]*\]", r"\1", m.group(1))).split()[0]
+            who = f"❔ Možná RK – v textu „{word}…“"
         if i.get("seller"):
             who += f" – {i['seller']}"
         from html import escape as E
