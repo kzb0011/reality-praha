@@ -1268,5 +1268,77 @@
   "procedure": "pokles v EU žebříčcích z #11 na #75",
   "rating": "B",
   "size": "15 911 hodnocení v App Store (obchod DE)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-15",
+  "grades": "AAA",
+  "key": "APP:1133960732:drop",
+  "link": "https://apps.apple.com/de/app/python-programmieren-mimo/id1133960732?uo=4",
+  "module": "APP",
+  "name": "Python Programmieren: Mimo",
+  "procedure": "pokles v EU žebříčcích z #4 na #61",
+  "rating": "A",
+  "size": "24 631 hodnocení v App Store (obchod DE)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-15",
+  "grades": "AAA",
+  "key": "APP:1454506983:drop",
+  "link": "https://apps.apple.com/de/app/kikom-kita-app/id1454506983?uo=4",
+  "module": "APP",
+  "name": "KIKOM (Kita) App",
+  "procedure": "pokles v EU žebříčcích z #21 na #84",
+  "rating": "A",
+  "size": "21 274 hodnocení v App Store (obchod DE)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-15",
+  "grades": "AAA",
+  "key": "APP:994130208:drop",
+  "link": "https://apps.apple.com/de/app/aimharder/id994130208?uo=4",
+  "module": "APP",
+  "name": "AimHarder",
+  "procedure": "pokles v EU žebříčcích z #22 na #74",
+  "rating": "B",
+  "size": "16 419 hodnocení v App Store (obchod ES)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-15",
+  "grades": "AAA",
+  "key": "APP:600446812:drop",
+  "link": "https://apps.apple.com/de/app/pacer-pedometer-schrittz%C3%A4hler/id600446812?uo=4",
+  "module": "APP",
+  "name": "Pacer Pedometer Schrittzähler",
+  "procedure": "pokles v EU žebříčcích z #5 na #61",
+  "rating": "B",
+  "size": "58 902 hodnocení v App Store (obchod FR)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-15",
+  "grades": "AAA",
+  "key": "APP:1424962016:drop",
+  "link": "https://apps.apple.com/de/app/schoolfox-schulkommunikation/id1424962016?uo=4",
+  "module": "APP",
+  "name": "SchoolFox - Schulkommunikation",
+  "procedure": "pokles v EU žebříčcích z #16 na #67",
+  "rating": "A",
+  "size": "29 910 hodnocení v App Store (obchod AT)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-15",
+  "grades": "AAA",
+  "key": "APP:1286352694:drop",
+  "link": "https://apps.apple.com/de/app/stay-informed-app/id1286352694?uo=4",
+  "module": "APP",
+  "name": "Stay Informed App",
+  "procedure": "pokles v EU žebříčcích z #20 na #99",
+  "rating": "A",
+  "size": "43 023 hodnocení v App Store (obchod DE)"
  }
 ]
