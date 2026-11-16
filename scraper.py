@@ -91,7 +91,8 @@ MAX_SINGLE = 15         # kolik inzerátů poslat samostatně, zbytek přijde ja
 SELLER_FILTER = "rk_ven"
 DIGEST_HOUR_UTC = 16    # denní souhrn vyřazených (16 UTC = 18:00 v létě / 17:00 v zimě)
 MAX_DETAILS = 100       # max. detailů inzerátů načtených za jeden běh (šetrnost k Bazoši)
-RK_MIN_LISTINGS = 3     # prodávající s tolika a více inzeráty v našich datech = realitka
+RK_MIN_LISTINGS = 3     # od tolika různých inzerátů je prodávající podezřelý (❔ Možná RK)
+RK_SURE_LISTINGS = 6    # od tolika různých inzerátů = realitka (vyřadit)
 
 RK_WORDS = [
     r"realitn\w* kancel", r"makl[eé]ř", r"provize", r"zprostředk", r"exkluzivně", r"exkluzivn\w* (nabíd|nabíz|prodej|zastoupen|smlouv)",
@@ -420,8 +421,10 @@ def classify(item, seller_counts):
     if item.get("phone") and seller_counts.get("tel:" + _norm_phone(item["phone"]), 0) >= RK_MIN_LISTINGS:
         return "rk", "stejný telefon u více inzerátů"
     sid = item.get("seller_id") or seller
-    if sid and seller_counts.get(sid, 0) >= RK_MIN_LISTINGS:
+    if sid and seller_counts.get(sid, 0) >= RK_SURE_LISTINGS:
         return "rk", f"{seller_counts[sid]} inzerátů od stejného prodávajícího"
+    if sid and seller_counts.get(sid, 0) >= RK_MIN_LISTINGS:   # 3–5 inzerátů: může být majitel více bytů
+        return "nejiste", f"má {seller_counts[sid]} různé inzeráty – možná RK"
     raw_text = " ".join(str(item.get(k) or "") for k in ("title", "desc", "desc_full"))
     m = re.search(r"\bR\.?\s?K\.?\s+[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž]+\s+[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž]+", raw_text)
     if m:                                        # „RK Karel Budín" = makléř se podepsal
@@ -740,6 +743,9 @@ def notify(new_items):
     for i in single:                       # každý inzerát zvlášť, s náhledem fotky
         price, meta = _fmt(i)
         who = {"soukromy": "👤 Soukromník", "nejiste": "❔ Nejisté (RK nepotvrzena)"}.get(i.get("seller_type"), "")
+        m2 = re.match(r"má (\d+) různé inzeráty", i.get("seller_reason") or "")
+        if m2:
+            who = f"❔ Možná RK – má na Bazoši {m2.group(1)} různé inzeráty"
         m = re.match(r"jen slovo v textu \((.*)\)", i.get("seller_reason") or "")
         if m:
             word = re.sub(r"[\\\[\]()|?*+.]|w\*", "", re.sub(r"\[(.)[^\]]*\]", r"\1", m.group(1))).split()[0]
