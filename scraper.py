@@ -32,7 +32,7 @@ UNWANTED_RE = r"\bsrub|karavan|mobilheim|mobil home|mobilní d[ůo]m|mobilní do
 ABROAD_RE = (r"v zahraničí|chorvatsk[oua]\b|španělsk[oua]\b|\bitáli[ei]\b|bulharsk[oua]\b|řeck[oua]\b|\begypt|dubaj|emirát"
              r"|tureck[oua]\b|\bkypr|černá hora|černé hoře|thajsk[oua]\b|\bbali\b|albáni|portugalsk[oua]\b"
              r"|hurghad|sahl hasheesh|\bu moře|od moře|k moři|na pláži|costa |istri[ie]|dalmáci|slunečné pobřeží|chalkidik|tenerif|kanárs")
-PRONAJEM_MIN_MIMO_PRAHU = 15_000   # pronájmy mimo Prahu až od této ceny (bez ceny se nechávají)
+PRONAJEM_MIN_MIMO_PRAHU = 11_000   # pronájmy mimo Prahu až od této ceny (bez ceny se nechávají)
 # Posílá se: Praha (PSČ 1xx xx) + okolí obcí podle prvních 3 číslic PSČ (pošt. obvod ≈ obec + ~10 km):
 NEAR_PSC = {
     "250",  # Brandýs n. L., Úvaly, Čelákovice, Odolena Voda, Klecany, Zdiby
@@ -384,6 +384,15 @@ def _norm_title(t):
 
 
 def classify(item, seller_counts):
+    """Jako _classify; navíc „RK nevolat" už inzerát nevyřadí (Bob 16. 11.) – přijde s varováním ⚠️."""
+    st, why = _classify(item, seller_counts)
+    text = " ".join(str(item.get(k) or "") for k in ("title", "desc", "desc_full")).lower()
+    if st != "rk" and any(re.search(w, text) for w in NO_RK_WORDS):
+        return "nejiste", "majitel nechce RK"
+    return st, why
+
+
+def _classify(item, seller_counts):
     """Vrací 'rk', 'soukromy' nebo 'nejiste' + důvod."""
     if item.get("source") == "ulovdomov":
         if item.get("ud_external"):
@@ -392,9 +401,6 @@ def classify(item, seller_counts):
             return "rk", "UlovDomov: není soukromý majitel"
     text = " ".join(str(item.get(k) or "") for k in ("title", "desc", "desc_full")).lower()
     seller = re.sub(r"\s+", " ", (item.get("seller") or "")).strip().lower()
-    for w in NO_RK_WORDS:
-        if re.search(w, text):
-            return "rk", "majitel nechce RK"
     for name in RK_SELLERS:
         pat = r"(?<!\w)" + re.escape(name) + r"(?!\w)"
         if re.search(pat, seller) or re.search(pat, text):
@@ -743,6 +749,8 @@ def notify(new_items):
     for i in single:                       # každý inzerát zvlášť, s náhledem fotky
         price, meta = _fmt(i)
         who = {"soukromy": "👤 Soukromník", "nejiste": "❔ Nejisté (RK nepotvrzena)"}.get(i.get("seller_type"), "")
+        if i.get("seller_reason") == "majitel nechce RK":
+            who = "⚠️ Majitel v inzerátu píše, že nechce realitky"
         m2 = re.match(r"má (\d+) různé inzeráty", i.get("seller_reason") or "")
         if m2:
             who = f"❔ Možná RK – má na Bazoši {m2.group(1)} různé inzeráty"

@@ -36,7 +36,7 @@ vyřadí realitky a poptávky a **soukromníky pošle do Telegramu**. Cílem je,
   (40 inzerátů/str., offset po 40; nahoře jsou TOPované – prochází se min. `MIN_PAGES`=3 stránky a končí po 2 stránkách bez nového). Jedno velké hledání na rubriku (`BAZOS_SEARCHES`), pak filtr podle PSČ (`near`):
   - rubriky: byt, dum (prodej i pronájem), pozemek, chata, garaz (jen prodej – pronájem garáží Bob nechce).
   - vyřazuje se: sruby, karavany, mobilheimy, mobilní/modulové domy, tiny house (`UNWANTED_RE`), nemovitosti v zahraničí (`ABROAD_RE`),
-    pronájmy mimo Prahu pod 15 000 Kč (`PRONAJEM_MIN_MIMO_PRAHU`, bez ceny se nechávají).
+    pronájmy mimo Prahu pod 11 000 Kč (`PRONAJEM_MIN_MIMO_PRAHU`, Bob 16. 11., bez ceny se nechávají).
   - pozemky: jen od 1 mil. Kč (`POZEMEK_MIN`, bez uvedené ceny se nechávají); **pole, louky, lesy, zemědělská půda se vyřazují** (`FIELD_RE`), pokud nejde o stavební / k bydlení (`BUILD_RE`) – Bob je nechce.
   - posílá se Praha (PSČ `1xx xx`) + `NEAR_PSC` = první 3 číslice PSČ (poštovní obvod ≈ obec + ~10 km): Brandýs, Úvaly,
     Čelákovice, Odolena Voda, Klecany, Zdiby (250), Říčany… (251), Praha-západ obce (252), Hostivice (253), Benešov (256/257),
@@ -62,7 +62,7 @@ Posílá se jen `soukromy` a `nejiste` (`SELLER_FILTER = "rk_ven"`). Vyřadí se
 - jméno je na seznamu `RK_SELLERS` (Bobův seznam – M&M, Paschke, HVB, Finpos, Next Reality, ZOOM, Bohemian Estates, Ideální nájemce,
   Dumrealit, Ladislav Burian/REALBrána, Pavelková, Jiří Beneš, Petr Schejbal, Vladimír Kremel, Jaroslav Čermák, Femida, Martin Petlach, Adam Horák, Marek Bijok, Karel Budín, Martin Kršňák, Luboš Rezek, Jana Barčuková, Tomáš Tvoroch (RK Evropa), Bohumír Kocián, Lukáš Kuchař, Oleksandr Dyrma, Martin Lubas…; jméno obsahující samostatné „RK“ = RK; krátká jména jako „TM" v `RK_SELLERS_EXACT` (shoda celého jména); navíc `RK_SELLER_IDS` = Bazoš idphone nahlášených RK, chytí je i pod jiným jménem; když Bob nahlásí další, přidej sem),
 - jméno obsahuje firmu (`Jméno - Firma`, ale „Jméno - Praha“ apod. je místo – `PLACE_RE`, čárku, s.r.o./spol., `…Real/Reality/Estate/Invest`, `REAL…`),
-- text obsahuje `NO_RK_WORDS` („RK nevolat", i „R.K nevolat", „R. K." apod. – Bob tyto majitele nechce oslovovat),
+- ~~text obsahuje `NO_RK_WORDS`~~ – od 16. 11. „RK nevolat" (i „R.K nevolat"…) inzerát **nevyřadí**, přijde s ⚠️ „Majitel v inzerátu píše, že nechce realitky" (Bob: posílat vše),
 - text obsahuje podpis „RK Jméno Příjmení“ (např. „RK Karel Budín“),
 - text obsahuje silné RK výrazy (`RK_WORDS`; **jen „měkká“ slova z `RK_TEXT_SOFT` – provize, makléř, zprostředkování, realitní kancelář, exkluzivně… – inzerát nevyřadí,
   pošle se jako ❔ „Možná RK – v textu …“** (Bob 14. 11.: raději víc inzerátů); vyřadí jen silné: výhradní zastoupení, ev. č., ID nabídky, web realitky, s.r.o.…; provize, makléř, zprostředkuje, výhradní zastoupení, ID nabídky, ev. č., …webrealit.cz…),
