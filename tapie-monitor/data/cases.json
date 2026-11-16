@@ -1340,5 +1340,53 @@
   "procedure": "pokles v EU žebříčcích z #20 na #99",
   "rating": "A",
   "size": "43 023 hodnocení v App Store (obchod DE)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-16",
+  "grades": "AAA",
+  "key": "APP:1462744119:drop",
+  "link": "https://apps.apple.com/de/app/brico-app/id1462744119?uo=4",
+  "module": "APP",
+  "name": "Brico App",
+  "procedure": "pokles v EU žebříčcích z #17 na #67",
+  "rating": "B",
+  "size": "33 609 hodnocení v App Store (obchod BE)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-16",
+  "grades": "AAA",
+  "key": "APP:427424432:drop",
+  "link": "https://apps.apple.com/de/app/magicplan/id427424432?uo=4",
+  "module": "APP",
+  "name": "magicplan",
+  "procedure": "pokles v EU žebříčcích z #18 na #70",
+  "rating": "B",
+  "size": "14 876 hodnocení v App Store (obchod DE)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-16",
+  "grades": "AAA",
+  "key": "APP:686418594:drop",
+  "link": "https://apps.apple.com/de/app/bookyway/id686418594?uo=4",
+  "module": "APP",
+  "name": "BookyWay",
+  "procedure": "pokles v EU žebříčcích z #28 na #78",
+  "rating": "B",
+  "size": "11 571 hodnocení v App Store (obchod IT)"
+ },
+ {
+  "country": "NL",
+  "date": "2026-11-16",
+  "grades": "AAA",
+  "key": "DIGI:3dd183edcfe0583b",
+  "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPYjY2cE9pMXVIVmpkRlY2NVdrVW9NM2haVjdSU3g1MFFEbnlyN0ltX1NBbml3OVBObTNvdGtDenVUVHp1WDRmZGwwM0hkeC1TTlJ1aG52dkg2el9WUWxKc0Exem54OE5EbVVzQ0pTcy1UZUVwaHpKY0ZyQlp3YTJTc2J0aU4yckNDQXlZcy03cUJnYURVMDQ1cTlieU5IczctendoRDJwMkY?oc=5",
+  "module": "DIGITAL",
+  "name": "Failliet modemerk Paprika maakt doorstart als webshop",
+  "procedure": "správce hledá kupce („doorstart“)",
+  "rating": "A",
+  "size": "?"
  }
 ]
