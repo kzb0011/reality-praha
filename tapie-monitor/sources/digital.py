@@ -51,11 +51,17 @@ BUYER_CALL = [
     "zoekt koper", "zoekt overnemer", "doorstart", "cerca acquirent", "cercasi acquirent",
     "busca comprador", "buscan comprador", "looking for a buyer", "seeking a buyer",
     "buyer sought", "hledá kupce", "hledá se kupec", "nabídky do",
+    # DE / IT / ES / NL – strukturované prodeje z insolvence
+    "m&a-prozess", "sucht investor", "sucht einen investor", "investor für", "übernahmeinteressent",
+    "manifestazione di interess", "invito a offrire", "invito a presentare offert", "ramo d'azienda",
+    "cessione del ramo", "cessione dell'azienda", "unidad productiva", "unidades productivas",
+    "oferta vinculante", "venta de la unidad", "curator zoekt", "zoekt een koper", "biedingen",
 ]
 # značka / web / e-commerce (Smala: značka, web, zásoby, zákazníci)
 BRAND = ["marque", "marke", "brand", "site internet", "site web", "boutique en ligne",
          "e-commerce", "ecommerce", "onlineshop", "online-shop", "webshop", "e-shop",
-         "seconde main", "second-hand", "secondhand", "plateforme", "plattform", "platform"]
+         "seconde main", "second-hand", "secondhand", "plateforme", "plattform", "platform",
+         "marchio", "marca", "merk", "negozio online", "tienda online", "webwinkel"]
 MONTHS = {
     "jan": 1, "janv": 1, "januar": 1, "january": 1, "janvier": 1, "gennaio": 1, "enero": 1, "januari": 1, "ledna": 1,
     "feb": 2, "fév": 2, "févr": 2, "februar": 2, "february": 2, "février": 2, "febbraio": 2, "febrero": 2, "februari": 2, "února": 2,
@@ -150,7 +156,9 @@ STAFF_RE = re.compile(
     re.I)
 
 QUERIES = {
-    "DE": ["für einen symbolischen Euro Übernahme Insolvenz", "symbolischer Kaufpreis Investor gesucht",
+    "DE": ["Insolvenzverwalter Investorenprozess Hersteller", "Insolvenzverwalter sucht Investor",
+           "Insolvenz M&A-Prozess Investoren gesucht Marke", "Investorensuche Insolvenz Onlinehändler",
+           "für einen symbolischen Euro Übernahme Insolvenz", "symbolischer Kaufpreis Investor gesucht",
            "Insolvenzverwalter Investorensuche Onlineshop Marke", "Insolvenz Onlinehändler Investor gesucht",
            "Start-up Insolvenz App Nutzer", "Insolvenz Plattform Investor gesucht",
            "Insolvenzantrag Online-Plattform Mitarbeiter", "Software Start-up Insolvenz Kunden"],
@@ -160,11 +168,16 @@ QUERIES = {
            "appel d'offres reprise plateforme en ligne", "liquidation judiciaire marque e-commerce repreneur",
            "redressement judiciaire plateforme repreneur", "redressement judiciaire application utilisateurs",
            "liquidation judiciaire start-up application", "start-up cherche repreneur plateforme"],
-    "NL": ["overname voor een symbolische euro", "faillissement webshop curator zoekt koper", "failliet merk webwinkel doorstart",
+    "NL": ["curator zoekt koper bedrijf", "curator zoekt overnemer", "faillissement doorstart kandidaten gezocht",
+           "overname voor een symbolische euro", "faillissement webshop curator zoekt koper", "failliet merk webwinkel doorstart",
            "faillissement platform app gebruikers", "failliet startup app doorstart"],
-    "IT": ["cessione a un euro simbolico azienda", "e-commerce marchio fallimento cerca acquirente", "startup app concordato utenti",
+    "IT": ["manifestazione di interesse ramo d'azienda curatore", "cessione ramo d'azienda fallimento offerte",
+           "concordato preventivo cerca investitore marchio", "liquidazione giudiziale vendita azienda marchio",
+           "cessione a un euro simbolico azienda", "e-commerce marchio fallimento cerca acquirente", "startup app concordato utenti",
            "piattaforma digitale fallimento acquirente"],
-    "ES": ["venta por un euro simbólico empresa", "tienda online marca concurso de acreedores busca comprador",
+    "ES": ["venta unidad productiva concurso de acreedores", "administración concursal unidad productiva oferta",
+           "concurso de acreedores busca comprador marca",
+           "venta por un euro simbólico empresa", "tienda online marca concurso de acreedores busca comprador",
            "startup app concurso de acreedores usuarios", "plataforma digital concurso comprador"],
     "CZ": ["startup aplikace insolvence uživatelé", "platforma insolvence kupec",
            "firma za symbolickou korunu", "prodej firmy za korunu"],
@@ -249,6 +262,12 @@ TECH_SITES = {
     "maddyness.com": ("https://www.maddyness.com/feed/", "FR", True),
     "startupitalia.eu": ("https://startupitalia.eu/feed", "IT", True),
     "czechcrunch.cz": ("https://czechcrunch.cz/feed/", "CZ", True),
+    # německé insolvence a hledání investorů (správci, odborný web)
+    "unternehmeredition.de": ("https://www.unternehmeredition.de/tag/investorensuche/feed/", "DE", True),
+    "pluta.net": ("https://www.pluta.net/de/presse/rss.xml", "DE", True),
+    "schultze-braun.de": ("https://www.schultze-braun.de/feed/", "DE", True),
+    "anchor.eu": ("https://www.anchor.eu/feed/", "DE", True),
+    "hww.eu": ("https://www.hww.eu/feed/", "DE", True),
 }
 EU_MARKERS = [
     "europe", "european", " eu ", "germany", "german", "berlin", "munich", "hamburg", "france",
@@ -358,7 +377,14 @@ def run(seen, fps):
                 if symbolic and any(w in low for w in DONE_WORDS) and not \
                         any(k in low for k in BUYER_CALL):
                     symbolic = None   # už prodáno – pro nás jen inspirace
-                if not (strong or medium or symbolic):
+                buyer_early = next((k for k in BUYER_CALL
+                                    if re.search(r"(?<![a-zà-ÿ])" + re.escape(k), low)), None)
+                if buyer_early == "doorstart" and any(x in low for x in ("maakt doorstart", "doorstart gemaakt",
+                                                                         "maken doorstart", "doorstart door")):
+                    buyer_early = None   # doorstart už proběhl – nikdo nehledá kupce
+                    if not (strong or medium or symbolic):
+                        continue
+                if not (strong or medium or symbolic or buyer_early):
                     continue
                 if medium and not strong and config.DIGITAL_LAYOFFS_ARE_STRONG:
                     strong = medium
@@ -367,11 +393,12 @@ def run(seen, fps):
                 users, staff, revenue = extract_users(text), extract_staff(text), extract_revenue(text)
                 g = grades(strong, digital, users, staff, revenue)
                 # „repreneur“ jen jako samostatné slovo (ne „entrepreneur“)
-                buyer = next((k for k in BUYER_CALL
-                              if re.search(r"(?<![a-zà-ÿ])" + re.escape(k), low)), None)
+                buyer = buyer_early   # (už bez proběhlých „doorstartů“)
                 brand = next((k for k in BRAND if k in low), None)
                 deadline = extract_deadline(text) if buyer else None
-                smala = bool(buyer and (digital or brand))
+                from common import keyword_category
+                sector = keyword_category(text) if buyer else None
+                smala = bool(buyer and (digital or brand or sector in ("A", "B", "C")))
                 if smala and config.DIGITAL_BUYER_CALL_IS_AAA:
                     g = "AAA"   # správce aktivně hledá kupce digitálního byznysu/značky = vždy zajímavé
                 if symbolic and config.SYMBOLIC_PRICE_IS_AAA:
@@ -394,11 +421,13 @@ def run(seen, fps):
                     "name": news.guess_company(it["title"]),
                     "country": COUNTRY_HINT.get(loc, "?") if eu_native or loc != "EN" else "EU?",
                     "procedure": (f"💶 převzetí za symbolickou cenu – Tapie style („{symbolic}“)" if symbolic
-                                  else f"správce hledá kupce („{buyer}“)" if smala
+                                  else f"správce hledá kupce („{buyer}“)" if (smala or buyer)
                                   else signal_label(strong or medium)),
                     "deadline": deadline,
                     "field": (f"digitální produkt / značka ({digital or brand})" if (digital or brand)
-                              else "firma (obor viz zpráva)" if symbolic else "?"),
+                              else {"A": "výrobce s vlastním produktem", "B": "strojírenství / kovovýroba",
+                                    "C": "software"}.get(sector or "", "")
+                              or ("firma (obor viz zpráva)" if symbolic else "?")),
                     "size": ", ".join(size) or "?",
                     "contact": news.extract_admin(text) or
                                "? – správce/vlastník je ve zprávě; u FR „administrateur judiciaire“",
