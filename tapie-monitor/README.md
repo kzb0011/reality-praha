@@ -91,7 +91,11 @@ SaaS, e-shopy – které jsou v insolvenci (Insolvenz, redressement judiciaire, 
 hledají kupce/investora nebo končí. Navíc čte tech weby (TechCrunch – jen evropské firmy, Sifted, tech.eu,
 EU-Startups, Silicon Canals, Trending Topics, deutsche-startups, t3n, Maddyness, StartupItalia, CzechCrunch)
 a bere i signály „nedaří se“ (propouštění, ztráta uživatelů, nedostatek peněz, ukončení, strategická revize).
-Tržby/ARR 1–100 mil. se počítají jako velikost. **AAA** jen když zpráva uvádí konkrétní velikost: aspoň
+Tržby/ARR 1–100 mil. se počítají jako velikost.
+Výzvy ke koupi hledá i mimo Francii: Německo (Investorenprozess, správci PLUTA, Schultze & Braun,
+Anchor, hww, Unternehmeredition), Itálie (manifestazione di interesse, ramo d'azienda), Španělsko
+(unidad productiva) a Nizozemsko (curator zoekt koper) – nejen digitální firmy, ale i výrobce A/B.
+Italský Portale delle Vendite Pubbliche a španělské dražby BOE nemají veřejné API → čteme zprávy o nich. **AAA** jen když zpráva uvádí konkrétní velikost: aspoň
 10 000 uživatelů/zákazníků (max. 20 mil.) nebo 10–300 zaměstnanců. Bez Bulharska, Rumunska, Polska.
 Nastavení `DIGITAL_*` v `config.py`.
 
