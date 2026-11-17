@@ -1496,5 +1496,17 @@
   "procedure": "správce hledá kupce („busca comprador“)",
   "rating": "A",
   "size": "?"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-17",
+  "grades": "AAA",
+  "key": "APP:1476236310:drop",
+  "link": "https://apps.apple.com/de/app/snipes-sneaker-streetwear/id1476236310?uo=4",
+  "module": "APP",
+  "name": "SNIPES - sneaker & streetwear",
+  "procedure": "pokles v EU žebříčcích z #3 na #54",
+  "rating": "B",
+  "size": "35 140 hodnocení v App Store (obchod DE)"
  }
 ]
