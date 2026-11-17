@@ -157,11 +157,15 @@ def merge_state(our_state_path, our_cases_path):
     if ours.get("apps", {}).get("best_day", "") >= theirs.get("apps", {}).get("best_day", ""):
         theirs["apps"] = ours.get("apps", theirs.get("apps", {}))
     theirs["weekly_sent"] = max(theirs.get("weekly_sent", ""), ours.get("weekly_sent", ""))
-    pend = {c.get("key"): c for c in theirs.get("pending", [])}
-    for c in ours.get("pending", []):
-        pend.setdefault(c.get("key"), c)
-    if theirs.get("weekly_sent", "") > ours.get("weekly_sent", ""):
-        pass  # jejich běh už přehled poslal – naše čekající jsou novější než jejich odeslání
+    # Čekající případy: strana s novějším odesláním přehledu je směrodatná; z druhé strany
+    # přidej jen případy zařazené PO tom odeslání (jinak by se poslaly podruhé).
+    t_ws, o_ws = theirs.get("weekly_sent", ""), ours.get("weekly_sent", "")
+    newest_ws = max(t_ws, o_ws)
+    base, other = (theirs, ours) if t_ws >= o_ws else (ours, theirs)
+    pend = {c.get("key"): c for c in base.get("pending", [])}
+    for c in other.get("pending", []):
+        if c.get("q", "") > newest_ws:
+            pend.setdefault(c.get("key"), c)
     theirs["pending"] = list(pend.values())
     for k, v in ours.items():
         theirs.setdefault(k, v)
@@ -226,7 +230,7 @@ def main():
         urgent = [c for c in aaa if c.get("deadline") and c["deadline"] <= urgent_cut]
         queued = [c for c in aaa if c not in urgent]
         pend = state.setdefault("pending", [])
-        pend += [{k: v for k, v in c.items() if k != "fp"} for c in queued]
+        pend += [{**{k: v for k, v in c.items() if k != "fp"}, "q": today()} for c in queued]
         log(f"[týden] odloženo do úterního přehledu: {len(queued)}, urgentních (termín ≤ "
             f"{config.URGENT_DEADLINE_DAYS} dní): {len(urgent)}, čeká celkem: {len(pend)}")
         cases = urgent
