@@ -1388,5 +1388,113 @@
   "procedure": "správce hledá kupce („doorstart“)",
   "rating": "A",
   "size": "?"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-17",
+  "grades": "AAA",
+  "key": "APP:876080126:drop",
+  "link": "https://apps.apple.com/de/app/motivation-t%C3%A4gliche-zitate/id876080126?uo=4",
+  "module": "APP",
+  "name": "Motivation - Tägliche Zitate",
+  "procedure": "pokles v EU žebříčcích z #12 na #63",
+  "rating": "B",
+  "size": "38 897 hodnocení v App Store (obchod FR)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-17",
+  "grades": "AAA",
+  "key": "APP:1459260306:drop",
+  "link": "https://apps.apple.com/de/app/fastic-abnehmen-fasten/id1459260306?uo=4",
+  "module": "APP",
+  "name": "Fastic: Abnehmen & Fasten",
+  "procedure": "pokles v EU žebříčcích z #10 na #69",
+  "rating": "B",
+  "size": "131 128 hodnocení v App Store (obchod DE)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-17",
+  "grades": "AAA",
+  "key": "APP:336599882:drop",
+  "link": "https://apps.apple.com/de/app/adidas-running-gps-tracker/id336599882?uo=4",
+  "module": "APP",
+  "name": "adidas Running: GPS Tracker",
+  "procedure": "pokles v EU žebříčcích z #2 na #52",
+  "rating": "B",
+  "size": "314 839 hodnocení v App Store (obchod DE)"
+ },
+ {
+  "country": "DE",
+  "date": "2026-11-17",
+  "grades": "AAA",
+  "key": "DIGI:20295808f7d2802d",
+  "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxOdHVlb0lzNF9sQU41VE5zWUp6VmtrYUVKZEljRUVKQzZibzBkODV6UEloSGpWVGVnd0ZRaDRhMXVueXhWNXR4YVNUT0FPMjlqUXFHRnh3WVpxYVdIZ0REamNCb091Mk5INDQxcUZHM0Zndm0wYXFwdDhkcno0TW1ZTm9BeGdYOVFPS3FjMXZPRG9zeEo5dkdwbmtkTTlsUk5aMmNNeDAzWHJaTWdGdXZ5blZtamh5QVVJV1lkLTBST3ZDX1E4a0ZxaEVtOUd1TXN3SXdrRktyZXAxdw?oc=5",
+  "module": "DIGITAL",
+  "name": "Volle Auftragsbücher, dennoch insolvent",
+  "procedure": "správce hledá kupce („sucht investor“)",
+  "rating": "A",
+  "size": "?"
+ },
+ {
+  "country": "FR",
+  "date": "2026-11-17",
+  "grades": "AAA",
+  "key": "DIGI:72c05be27f342056",
+  "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1qNVJna2NYN0pianNpSjhzcE43LVFXV1RNRlc1S0dRNW9aQnlSbFFTQXRNYmZ3aHZqMmstTW1jWFpINXpmcTRKRWhOT21kSk0?oc=5",
+  "module": "DIGITAL",
+  "name": "Sarthe",
+  "procedure": "správce hledá kupce („repreneur“)",
+  "rating": "A",
+  "size": "?"
+ },
+ {
+  "country": "NL",
+  "date": "2026-11-17",
+  "grades": "AAA",
+  "key": "DIGI:71e34ac422514713",
+  "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOZFlSVjBfUFBLWDJpRHV0QU84U2lqZEdrTFgwTHJVWl8xWDJTbTg0VzMyNEZIV3ZoR2xTYnI2UkJnY3dMd3I0X1pNc2tkUXpYOWExOW02U2ItSVkyVDd2bjVlUE5OSGJfLUhRWmxkQ1VnZkVYQzZaMFpjWDgwajlxNFFaZFhFTG5QVEFad1JicW9lNUY2aXpUcUpFTVVMMGNLNU1YY0lGdlJrOXNpSW92M0JRNW9HZw?oc=5",
+  "module": "DIGITAL",
+  "name": "Paprika maakt online doorstart in vijf landen na faillissement",
+  "procedure": "správce hledá kupce („doorstart“)",
+  "rating": "A",
+  "size": "?"
+ },
+ {
+  "country": "ES",
+  "date": "2026-11-17",
+  "grades": "AAA",
+  "key": "DIGI:85e80f2c552657da",
+  "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNcFh3ckZwZlFWWWp3eEtvRE1ERWxkVHBzR0tvV3gyeXRJdFB1X1AzYkRZaXV5OHNNcmlzSVNwckJJVk95OFZ6TGtRaXRCNGQxRG0xN3VVTkRIeW0wX0lDWGppZEtNTWQwRnB0NFItQVdFalVfamxSZjJ2RWd3cVBuTWRSZlYtVDNYOFgySkx6dGZ3V0JWSkprMUZvQjRhQlJuV2tuajVB0gGmAUFVX3lxTE1wWHdyRnBmUVZZand4S29ETURFbGRUcHNHS29XeDJ5dEl0UHVfUDNiRFlpdXk4c01yaXNJU3ByQklWT3k4VnpMa1FpdEI0ZDFEbTE3dVVOREh5bTBfSUNYamlkS01NZDBGcHQ0Ui1BV0VqVV9qbFJmMnZFZ3dxUG5NZFJmVi1UM1g4WDJKTHp0ZndXQlZKSmsxRm9CNGFCUm5Xa25qNUE?oc=5",
+  "module": "DIGITAL",
+  "name": "Incarsa busca la venta de su unidad productiva",
+  "procedure": "správce hledá kupce („unidad productiva“)",
+  "rating": "A",
+  "size": "?"
+ },
+ {
+  "country": "ES",
+  "date": "2026-11-17",
+  "grades": "AAA",
+  "key": "DIGI:ffbcf48a90370ce2",
+  "link": "https://news.google.com/rss/articles/CBMimAJBVV95cUxOQTV5dWRkQmhQb3ozSE52b05hRUROMm9pTGQ3WjdPVThGQ3p5bFdnVjBpNjlRVUU1c2hhX0JrWUtIN0c2XzJveHNBYnlORnZWX0EtUFVjQ05sQ1dGV2ptTXByTVZldW9SMDNoekMyeFMyUlphSHZ0alVHNHlOLXNoOGFVZDZrQlVISENibGM1bGlVby1ETTZVc1RnRFVoREktLVZIYnoyUmhYQTlCTkhJenlRT3p5ZEtzY3R1dFRHdXZDZUNTSFg2NmpMTURKSUs3dkwzMm9fZ3pPbVE1bVg0UTM2S241WVUxTnpaVFIyZjEzQnBMZGUyOURzZTFXTkJ3dGtLRnlmRXZidk53TWJlSXBaY2pMSGIx?oc=5",
+  "module": "DIGITAL",
+  "name": "La fábrica de Scoobic en Utrera busca comprador tras la quiebra del grupo empres",
+  "procedure": "správce hledá kupce („busca comprador“)",
+  "rating": "A",
+  "size": "?"
+ },
+ {
+  "country": "ES",
+  "date": "2026-11-17",
+  "grades": "AAA",
+  "key": "DIGI:a9f5978d686aa1e6",
+  "link": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxQQVVjUlF3c2hWRk1LdGVCcC1ic3pCZHVxRXRXc0NDX0lscnZjdm4xSlpnbFNBV3dSQjVaTkhkVDF4bjNRWEgtNW90N2M3WmVzdnVxUEtwcWQyVmxkUUxqQWdYbThkRkp0WjIyTGYxZ0JmU0pwSFpqMjI1dXM3c1hrc29ReHNlTE9TOXNWUjhKeFZaRUxZYVd2SHJ1azZ5Y0RyNnNCTUZHc1VkN3d1eHAtQ0dkZkhzdE05SGthY1lhTlk4Nzk2a29zTHFjRE05S2s0MF9SbFBZSjc4S3g4ZHhHVWV5aEg?oc=5",
+  "module": "DIGITAL",
+  "name": "SanCor busca comprador para seis fábricas y sus marcas",
+  "procedure": "správce hledá kupce („busca comprador“)",
+  "rating": "A",
+  "size": "?"
  }
 ]
