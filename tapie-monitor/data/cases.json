@@ -1508,5 +1508,29 @@
   "procedure": "pokles v EU žebříčcích z #3 na #54",
   "rating": "B",
   "size": "35 140 hodnocení v App Store (obchod DE)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-19",
+  "grades": "AAA",
+  "key": "APP:314498713:drop",
+  "link": "https://apps.apple.com/de/app/bettersleep-einschlafhilfe/id314498713?uo=4",
+  "module": "APP",
+  "name": "BetterSleep: Einschlafhilfe",
+  "procedure": "pokles v EU žebříčcích z #14 na #76",
+  "rating": "B",
+  "size": "11 462 hodnocení v App Store (obchod FR)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-19",
+  "grades": "AAA",
+  "key": "APP:377700730:drop",
+  "link": "https://apps.apple.com/de/app/parship-die-dating-app/id377700730?uo=4",
+  "module": "APP",
+  "name": "Parship: die Dating App",
+  "procedure": "pokles v EU žebříčcích z #13 na #69",
+  "rating": "B",
+  "size": "15 595 hodnocení v App Store (obchod DE)"
  }
 ]
