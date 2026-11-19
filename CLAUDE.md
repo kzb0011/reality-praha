@@ -60,7 +60,7 @@ vyřadí realitky a poptávky a **soukromníky pošle do Telegramu**. Cílem je,
 ## Filtr realitek (`classify` → `rk` / `soukromy` / `nejiste`)
 Posílá se jen `soukromy` a `nejiste` (`SELLER_FILTER = "rk_ven"`). Vyřadí se jako RK, pokud:
 - jméno je na seznamu `RK_SELLERS` (Bobův seznam – M&M, Paschke, HVB, Finpos, Next Reality, ZOOM, Bohemian Estates, Ideální nájemce,
-  Dumrealit, Ladislav Burian/REALBrána, Pavelková, Jiří Beneš, Petr Schejbal, Vladimír Kremel, Jaroslav Čermák, Femida, Martin Petlach, Adam Horák, Marek Bijok, Karel Budín, Martin Kršňák, Luboš Rezek, Jana Barčuková, Tomáš Tvoroch (RK Evropa), Bohumír Kocián, Lukáš Kuchař, Oleksandr Dyrma, Martin Lubas…; jméno obsahující samostatné „RK“ = RK; krátká jména jako „TM" v `RK_SELLERS_EXACT` (shoda celého jména); navíc `RK_SELLER_IDS` = Bazoš idphone nahlášených RK, chytí je i pod jiným jménem; když Bob nahlásí další, přidej sem),
+  Dumrealit, Ladislav Burian/REALBrána, Pavelková, Jiří Beneš, Petr Schejbal, Vladimír Kremel, Jaroslav Čermák, Femida, Martin Petlach, Adam Horák, Marek Bijok, Karel Budín, Martin Kršňák, Luboš Rezek, Jana Barčuková, Tomáš Tvoroch (RK Evropa), Bohumír Kocián, Lukáš Kuchař, Oleksandr Dyrma, Martin Lubas…; jméno obsahující samostatné „RK“/„Reality“/„infolinka“ = RK; krátká jména jako „TM" v `RK_SELLERS_EXACT` (shoda celého jména); navíc `RK_SELLER_IDS` = Bazoš idphone nahlášených RK, chytí je i pod jiným jménem; když Bob nahlásí další, přidej sem),
 - jméno obsahuje firmu (`Jméno - Firma`, ale „Jméno - Praha“ apod. je místo – `PLACE_RE`, čárku, s.r.o./spol., `…Real/Reality/Estate/Invest`, `REAL…`),
 - ~~text obsahuje `NO_RK_WORDS`~~ – od 16. 11. „RK nevolat" (i „R.K nevolat"…) inzerát **nevyřadí**, přijde s ⚠️ „Majitel v inzerátu píše, že nechce realitky" (Bob: posílat vše),
 - text obsahuje podpis „RK Jméno Příjmení“ (např. „RK Karel Budín“),
@@ -84,6 +84,11 @@ odkazy „Otevřít inzerát · 📲 WhatsApp" (odkaz na Google Bob nechce) (wa.
 varianty pronájem/prodej, byt/dům). Max. 15 samostatných zpráv na běh, zbytek souhrnem.
 Je-li v textu inzerátu e-mail, zpráva ukáže ✉️ adresu + text e-mailu v `<code>` (klepnutím se zkopíruje; Telegram `mailto:` odkazy nebere).
 Automatické odesílání WhatsApp zpráv ani e-mailů **nedělat** (ban čísla, nevyžádaná obchodní sdělení) – jen předvyplněný odkaz, Bob odesílá sám.
+
+## Týdenní přehled „Majitelé, kterým se nedaří“ (`motivated_digest`)
+Každé pondělí od 6:00 UTC (první běh po té hodině; `motivated_week` v `data.json` hlídá, aby šel jen 1× týdně) jedna zpráva:
+top 7 prodejů + 5 pronájmů. **Jen jistí soukromníci** (`seller_type == "soukromy"` i podle dnešních pravidel, známé jméno,
+< 3 různé inzeráty – žádné realitky ani ❔). Signály: snížená cena, ≥ 14 dní v inzerci, opakované obnovení.
 
 ## Rozhodnuto (neřešit znovu)
 - **Telefon z Bazoše se nezískává** – Bazoš číslo nevydává (ad-phone.php vrací 200 bez čísla). Bob: nezkoušet.

@@ -89,6 +89,7 @@ MAX_SINGLE = 15         # kolik inzerátů poslat samostatně, zbytek přijde ja
 # Filtr realitek: "rk_ven" = posílat soukromníky i nejisté (vyřadí jen jasné RK),
 #                 "jen_soukromi" = posílat jen jasné soukromníky, None = posílat vše
 SELLER_FILTER = "rk_ven"
+MOTIVATED_WEEKDAY, MOTIVATED_HOUR_UTC = 0, 6   # pondělí od 7:00 (zima) / 8:00 (léto) – týdenní přehled motivovaných
 DIGEST_HOUR_UTC = 16    # denní souhrn vyřazených (16 UTC = 18:00 v létě / 17:00 v zimě)
 MAX_DETAILS = 100       # max. detailů inzerátů načtených za jeden běh (šetrnost k Bazoši)
 RK_MIN_LISTINGS = 3     # od tolika různých inzerátů je prodávající podezřelý (❔ Možná RK)
@@ -409,7 +410,7 @@ def _classify(item, seller_counts):
         return "rk", f"na seznamu RK ({item.get('seller')})"
     if item.get("seller_id") and str(item["seller_id"]) in RK_SELLER_IDS:
         return "rk", f"nahlášená RK (ID {item['seller_id']})"
-    if re.search(r"(?<!\w)(rk|r\.k\.?|realitka|reality)(?!\w)", seller):
+    if re.search(r"(?<!\w)(rk|r\.k\.?|realitka|reality|infolinka)(?!\w)", seller):
         return "rk", f"jméno firmy ({item.get('seller')})"
     _after = re.split(r"\s[-–|]\s*", item.get("seller") or "", maxsplit=1)
     if len(_after) == 2 and _after[1].strip() and not re.fullmatch(PLACE_RE, _after[1].strip().lower()):
@@ -814,6 +815,66 @@ def daily_rk_digest(store):
         _send(tok, chat, chunk, preview=False)
 
 
+def motivated_digest(store, data):
+    """Jednou týdně (pondělí ráno) přehled soukromníků, kterým se nedaří prodat/pronajmout.
+    Jen ověření soukromníci (seller_type == "soukromy", známé jméno, < 3 různé inzeráty) – žádné realitky ani ❔."""
+    tok, chat = os.getenv("TELEGRAM_TOKEN"), os.getenv("TELEGRAM_CHAT_ID")
+    week = NOW.strftime("%G-W%V")
+    if not (tok and chat) or NOW.weekday() != MOTIVATED_WEEKDAY or NOW.hour < MOTIVATED_HOUR_UTC \
+            or data.get("motivated_week") == week:
+        return
+    titles, groups = {}, {}
+    for v in store.values():
+        sid = v.get("seller_id") or (v.get("seller") or "").lower()
+        name = re.sub(r"\s+", " ", (v.get("seller") or "")).strip().lower()
+        if name:
+            titles.setdefault("n:" + name, set()).add(_norm_title(v.get("title")))
+        if sid:
+            titles.setdefault(sid, set()).add(_norm_title(v.get("title")))
+            groups.setdefault((sid, _norm_title(v.get("title")), v.get("akce")), []).append(v)
+    cands = []
+    for v in store.values():
+        sid = v.get("seller_id") or (v.get("seller") or "").lower()
+        if v.get("source") != "bazos" or v.get("seller_type") != "soukromy" or not v.get("seller") or v.get("dup_of"):
+            continue
+        name = "n:" + re.sub(r"\s+", " ", v["seller"]).strip().lower()
+        if max(len(titles.get(sid, ())), len(titles.get(name, ()))) >= RK_MIN_LISTINGS \
+                or (NOW - datetime.fromisoformat(v["last_seen"])).days > 2 \
+                or (v.get("akce") == "prodej" and re.match(r"\s*pronaj|\s*pronáj", v["title"], re.I)):
+            continue                                   # možná RK / už neviditelné
+        if classify(v, {k: len(t) for k, t in titles.items()})[0] != "soukromy":
+            continue                                   # podle dnešních pravidel (seznam RK, ID…) není jistý soukromník
+        why, score = [], 0.0
+        if v.get("price_prev") and v.get("price") and v["price"] < v["price_prev"]:
+            pct = 100 * (v["price_prev"] - v["price"]) / v["price_prev"]
+            why.append(f"cena −{pct:.0f} %"); score += 2 + pct / 3
+        group = groups.get((sid, _norm_title(v.get("title")), v.get("akce")), [])
+        first = min(x["first_seen"] for x in group) if group else v["first_seen"]
+        days = (NOW - datetime.fromisoformat(first)).days
+        if not v.get("first_load") and days >= 14:
+            why.append(f"{days} dní v inzerci"); score += days / 7
+        if len(group) >= 2:
+            why.append(f"{len(group)}× obnoven"); score += len(group)
+        if why:
+            cands.append((score, why, v))
+    data["motivated_week"] = week
+    if not cands:
+        log("[motivovaní] nic k poslání"); return
+    from html import escape as E
+    lines = ["🎯 <b>Majitelé, kterým se nedaří</b> (jen soukromníci, týdenní přehled)"]
+    for akce, label, n in (("prodej", "PRODEJ", 7), ("pronajem", "PRONÁJEM", 5)):
+        top = sorted([c for c in cands if c[2].get("akce") == akce], key=lambda c: -c[0])[:n]
+        if not top:
+            continue
+        lines.append(f"\n<b>{label}</b>")
+        for _, why, v in top:
+            price, meta = _fmt(v)
+            lines.append(f"• <a href=\"{E(v['url'])}\">{E(v['title'][:60])}</a>\n  {E(price)} | {E(v.get('district') or '')} | "
+                         f"👤 {E(v.get('seller') or '')}\n  ⚠️ {E(', '.join(why))}")
+    _send(tok, chat, "\n".join(lines), preview=False, html=True)
+    log(f"[motivovaní] odesláno, kandidátů {len(cands)}")
+
+
 # ------------------------------------------------------------------ MAIN
 
 # ------------------------------------------------------------------ PRŮZKUM NOVÝCH ZDROJŮ (dočasné)
@@ -987,6 +1048,11 @@ def main():
     for k in [k for k, v in store.items() if v["last_seen"] < cutoff]:
         del store[k]
 
+    if not first_run:
+        try:
+            motivated_digest(store, data)
+        except Exception as e:
+            log("[motivovaní] CHYBA", e)
     data["updated"] = now_iso
     DATA_FILE.parent.mkdir(exist_ok=True)
     DATA_FILE.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), "utf-8")
@@ -1012,6 +1078,7 @@ def merge(ours_path):
             newer["first_seen"] = min(a.get("first_seen", ""), b.get("first_seen", "")) or newer.get("first_seen")
             L[k] = newer
     theirs["scheme"] = ours.get("scheme") or theirs.get("scheme")
+    theirs["motivated_week"] = max(ours.get("motivated_week") or "", theirs.get("motivated_week") or "") or None
     theirs["updated"] = max(theirs.get("updated", ""), ours.get("updated", ""))
     DATA_FILE.write_text(json.dumps(theirs, ensure_ascii=False, separators=(",", ":")), "utf-8")
     log(f"[merge] sloučeno, celkem {len(L)}")
