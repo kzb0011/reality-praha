@@ -90,6 +90,14 @@ Každé pondělí od 6:00 UTC (první běh po té hodině; `motivated_week` v `d
 top 7 prodejů + 5 pronájmů. **Jen jistí soukromníci** (`seller_type == "soukromy"` i podle dnešních pravidel, známé jméno,
 < 3 různé inzeráty – žádné realitky ani ❔). Signály: snížená cena, ≥ 14 dní v inzerci, opakované obnovení.
 
+## Měsíční „📊 Tržní radar“ (`market_update` + `market_report`)
+- `docs/market.json` – denní souhrn (drží se natrvalo, ~2 kB/den): klíč `akce|typ|dispozice|oblast` → [Kč/m² nových inzerátů, počet, soukromníci].
+  Dopočítává se z `data.json` (30 dní) každý běh pro chybějící celé dny → ztracený zápis nevadí. Vynechává `first_load` a duplicity.
+- 1. den v měsíci od 7:00 UTC jedna zpráva: medián nabídkové ceny Kč/m² (prodej i pronájem bytů) – Praha celkem, dispozice, čtvrti/okresy
+  + změna proti předchozímu měsíci; domy jen počty (plocha u domů nespolehlivá). `market_month` v `data.json` = už odesláno.
+- „Jak rychle se prodá“ **neměříme** – hlídač nevidí starší stránky Bazoše, zmizení inzerátu ≠ prodej. Bod 1 (kupci z poptávek) Bob nechce.
+- Žádné AI/tokeny – čistý Python v GitHub Actions.
+
 ## Rozhodnuto (neřešit znovu)
 - **Telefon z Bazoše se nezískává** – Bazoš číslo nevydává (ad-phone.php vrací 200 bez čísla). Bob: nezkoušet.
   `bazos_phone` jen vezme `tel:` odkaz, pokud je přímo ve stránce, a `idphone` jako `seller_id` – žádné další požadavky.

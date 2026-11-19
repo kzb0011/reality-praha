@@ -875,6 +875,124 @@ def motivated_digest(store, data):
     log(f"[motivovaní] odesláno, kandidátů {len(cands)}")
 
 
+MARKET_FILE = Path("docs/market.json")   # denní souhrn trhu – drží se natrvalo (malý), z něj měsíční „Tržní radar“
+MARKET_REPORT_HOUR_UTC = 7               # 1. den v měsíci od 8:00 (zima)
+LAYOUTS = ["1+kk", "1+1", "2+kk", "2+1", "3+kk", "3+1"]
+
+
+def _area(v):
+    d = v.get("district") or ""
+    return d if d.startswith("Praha ") else ("Praha" if d == "Praha" else d or "?")
+
+
+def market_update(store):
+    """Doplní do market.json každý celý den (z data.json, které drží 30 dní) – nabídkové ceny Kč/m² nových inzerátů.
+    Klíč „akce|typ|dispozice|oblast“ → [Kč/m² …, počet, z toho soukromníci]. Přepočítatelné, takže nevadí ztracený zápis."""
+    mk = json.loads(MARKET_FILE.read_text("utf-8")) if MARKET_FILE.exists() else {"days": {}}
+    today = NOW.date().isoformat()
+    days = {}
+    for v in store.values():
+        if v.get("source") != "bazos" or v.get("first_load") or v.get("dup_of") or v.get("typ") not in ("byt", "dum"):
+            continue
+        day = v["first_seen"][:10]
+        if day >= today or day in mk["days"]:
+            continue
+        lay = v.get("layout") if v.get("typ") == "byt" and v.get("layout") in LAYOUTS else ("4+" if v.get("typ") == "byt" and v.get("layout") else "-")
+        key = f"{v['akce']}|{v['typ']}|{lay}|{_area(v)}"
+        rec = days.setdefault(day, {}).setdefault(key, [[], 0, 0])
+        rec[1] += 1
+        rec[2] += v.get("seller_type") != "rk"
+        ppm2 = v.get("ppm2")
+        lo, hi = (20_000, 450_000) if v["akce"] == "prodej" else (80, 1_500)
+        if ppm2 and lo <= ppm2 <= hi:
+            rec[0].append(ppm2)
+    oldest = min((v["first_seen"][:10] for v in store.values()), default=today)
+    for day, recs in days.items():
+        if day > oldest:                       # první (neúplný) den dat vynechat
+            mk["days"][day] = recs
+    if days:
+        MARKET_FILE.write_text(json.dumps(mk, ensure_ascii=False, separators=(",", ":")), "utf-8")
+    return mk
+
+
+def _median(xs):
+    xs = sorted(xs)
+    return xs[len(xs) // 2] if xs else None
+
+
+def market_report(mk, data):
+    """1. den v měsíci: „📊 Tržní radar“ za minulý měsíc vs. předminulý (nabídkové ceny z Bazoše)."""
+    tok, chat = os.getenv("TELEGRAM_TOKEN"), os.getenv("TELEGRAM_CHAT_ID")
+    first = NOW.date().replace(day=1)
+    prev_end = first - timedelta(days=1)
+    month = prev_end.strftime("%Y-%m")
+    if not (tok and chat) or NOW.day != 1 or NOW.hour < MARKET_REPORT_HOUR_UTC or data.get("market_month") == month:
+        return
+    prev2 = (prev_end.replace(day=1) - timedelta(days=1)).strftime("%Y-%m")
+
+    def agg(m, akce, typ, layout=None, area=None):
+        ps, n, npriv = [], 0, 0
+        for day, recs in mk["days"].items():
+            if not day.startswith(m):
+                continue
+            for key, (p, c, cp) in recs.items():
+                a, t, lay, ar = key.split("|")
+                if a != akce or t != typ or (layout and lay != layout):
+                    continue
+                if area == "PRAHA" and not re.fullmatch(r"Praha( \d+)?", ar):
+                    continue
+                if area and area != "PRAHA" and ar != area:
+                    continue
+                ps += p; n += c; npriv += cp
+        return _median(ps), n, npriv
+
+    days_in = sum(1 for d in mk["days"] if d.startswith(month))
+    if days_in < 14:
+        log(f"[radar] za {month} jen {days_in} dní dat – neposílám"); data["market_month"] = month; return
+
+    def fmt(akce, med, med0):
+        if not med:
+            return "–"
+        val = f"{med / 1000:.0f} tis. Kč/m²" if akce == "prodej" else f"{med:.0f} Kč/m²/měs."
+        if med0:
+            ch = 100 * (med - med0) / med0
+            val += f" ({'↑' if ch > 0 else '↓' if ch < 0 else '→'}{abs(ch):.0f} %)"
+        return val
+
+    from html import escape as E
+    names = ["leden", "únor", "březen", "duben", "květen", "červen", "červenec", "srpen", "září", "říjen", "listopad", "prosinec"]
+    out = [f"📊 <b>Tržní radar – {names[prev_end.month - 1]} {prev_end.year}</b>",
+           "<i>nabídkové ceny nových inzerátů na Bazoši, v závorce změna proti minulému měsíci</i>"]
+    for akce, label in (("prodej", "PRODEJ BYTŮ"), ("pronajem", "PRONÁJEM BYTŮ")):
+        med, n, npriv = agg(month, akce, "byt", area="PRAHA")
+        med0, _, _ = agg(prev2, akce, "byt", area="PRAHA")
+        out.append(f"\n<b>{label} – Praha</b>: {fmt(akce, med, med0)}, nových {n} (soukromníci {npriv})")
+        rows = []
+        for lay in LAYOUTS:
+            m1, c1, _ = agg(month, akce, "byt", lay, "PRAHA")
+            if c1 >= 5:
+                rows.append(f"{lay} {fmt(akce, m1, agg(prev2, akce, 'byt', lay, 'PRAHA')[0])}")
+        if rows:
+            out.append("  " + " · ".join(rows))
+        areas = {}
+        for day, recs in mk["days"].items():
+            if day.startswith(month):
+                for key, (p, c, cp) in recs.items():
+                    a, t, lay, ar = key.split("|")
+                    if a == akce and t == "byt":
+                        areas[ar] = areas.get(ar, 0) + c
+        top = [a for a, c in sorted(areas.items(), key=lambda x: -x[1]) if c >= 5][:12]
+        for ar in sorted(top, key=lambda a: (not re.fullmatch(r"Praha( \d+)?", a), int((re.findall(r"\d+", a) or [99])[0]), a)):
+            m1, c1, cp1 = agg(month, akce, "byt", area=ar)
+            out.append(f"• {E(ar)}: {fmt(akce, m1, agg(prev2, akce, 'byt', area=ar)[0])}, nových {c1}")
+    _, c1, cp1 = agg(month, "prodej", "dum")
+    _, c0, _ = agg(prev2, "prodej", "dum")
+    out.append(f"\n<b>PRODEJ DOMŮ</b> (Praha + okolí): nových {c1} (soukromníci {cp1})" + (f", minulý měsíc {c0}" if c0 else ""))
+    _send(tok, chat, "\n".join(out)[:4000], preview=False, html=True)
+    data["market_month"] = month
+    log(f"[radar] odeslán za {month}")
+
+
 # ------------------------------------------------------------------ MAIN
 
 # ------------------------------------------------------------------ PRŮZKUM NOVÝCH ZDROJŮ (dočasné)
@@ -1053,6 +1171,10 @@ def main():
             motivated_digest(store, data)
         except Exception as e:
             log("[motivovaní] CHYBA", e)
+        try:
+            market_report(market_update(store), data)
+        except Exception as e:
+            log("[radar] CHYBA", e)
     data["updated"] = now_iso
     DATA_FILE.parent.mkdir(exist_ok=True)
     DATA_FILE.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), "utf-8")
@@ -1078,6 +1200,7 @@ def merge(ours_path):
             newer["first_seen"] = min(a.get("first_seen", ""), b.get("first_seen", "")) or newer.get("first_seen")
             L[k] = newer
     theirs["scheme"] = ours.get("scheme") or theirs.get("scheme")
+    theirs["market_month"] = max(ours.get("market_month") or "", theirs.get("market_month") or "") or None
     theirs["motivated_week"] = max(ours.get("motivated_week") or "", theirs.get("motivated_week") or "") or None
     theirs["updated"] = max(theirs.get("updated", ""), ours.get("updated", ""))
     DATA_FILE.write_text(json.dumps(theirs, ensure_ascii=False, separators=(",", ":")), "utf-8")
