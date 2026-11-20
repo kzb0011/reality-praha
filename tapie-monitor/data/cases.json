@@ -1532,5 +1532,41 @@
   "procedure": "pokles v EU žebříčcích z #13 na #69",
   "rating": "B",
   "size": "15 595 hodnocení v App Store (obchod DE)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-20",
+  "grades": "AAA",
+  "key": "APP:393136788:drop",
+  "link": "https://apps.apple.com/de/app/la-redoute-mode-home/id393136788?uo=4",
+  "module": "APP",
+  "name": "La Redoute - Mode & Home",
+  "procedure": "pokles v EU žebříčcích z #14 na #64",
+  "rating": "B",
+  "size": "19 948 hodnocení v App Store (obchod PT)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-20",
+  "grades": "AAA",
+  "key": "APP:738897668:drop",
+  "link": "https://apps.apple.com/de/app/vivavideo-ki-video-editor/id738897668?uo=4",
+  "module": "APP",
+  "name": "VivaVideo: KI-Video-Editor",
+  "procedure": "pokles v EU žebříčcích z #23 na #74",
+  "rating": "B",
+  "size": "43 229 hodnocení v App Store (obchod ES)"
+ },
+ {
+  "country": "NL",
+  "date": "2026-11-20",
+  "grades": "AAA",
+  "key": "DIGI:9d865d864bbeca82",
+  "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQMUhkZEFaeWYyM3lFOGtMbF9wdHJfNUVZTm1SSDFRc1QySFcwX29mQkpqcVFpVDMtcFBHWDJBQUtrcEFyWEEzWHZ1ZTJiY3lHaE9WTlZxWmdGTGtlVVhzUkpNREoyc1doYjNSRGd6RUNmb2JkVlJDd3c0NXlIYWY0VVpNUEJSclY5YXFXYzRTMA?oc=5",
+  "module": "DIGITAL",
+  "name": "Fatbikeproducent Knaap failliet, doorstart is mogelijkheid",
+  "procedure": "správce hledá kupce („doorstart“)",
+  "rating": "A",
+  "size": "?"
  }
 ]
