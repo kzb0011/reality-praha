@@ -1568,5 +1568,53 @@
   "procedure": "správce hledá kupce („doorstart“)",
   "rating": "A",
   "size": "?"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-21",
+  "grades": "AAA",
+  "key": "APP:378319816:drop",
+  "link": "https://apps.apple.com/de/app/europa-park-rulantica/id378319816?uo=4",
+  "module": "APP",
+  "name": "Europa-Park & Rulantica",
+  "procedure": "pokles v EU žebříčcích z #4 na #67",
+  "rating": "B",
+  "size": "34 386 hodnocení v App Store (obchod FR)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-21",
+  "grades": "AAA",
+  "key": "APP:839285684:drop",
+  "link": "https://apps.apple.com/de/app/workout-f%C3%BCr-frauen-abnehmen/id839285684?uo=4",
+  "module": "APP",
+  "name": "Workout für Frauen: Abnehmen",
+  "procedure": "pokles v EU žebříčcích z #14 na #91",
+  "rating": "B",
+  "size": "29 706 hodnocení v App Store (obchod NL)"
+ },
+ {
+  "country": "FR",
+  "date": "2026-11-21",
+  "grades": "AAA",
+  "key": "DIGI:ef7b1fbd4daf4b8a",
+  "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxQbVMwLXIzTzF1ZFc2LVoxQ0ZhSTZxZkhSekFhZnVmUWZBbzZ6MmNjbVpMdVEtT1NVSGctZk1Rb3NIc1l2TmFrd0V6MHFpb2thTWhrVWpBc1JpemIzcHJkWFFXT0E4TkFKTF95TnZVaGxici1PczBoTlNrbnBnWndfRDUyazUyV0FUcVpUbGd6bXk1YWE4X0tNYjBTYXg5UQ?oc=5",
+  "module": "DIGITAL",
+  "name": "Ines de la Fressange en redressement judiciaire, la marque de l’ancien mannequin",
+  "procedure": "správce hledá kupce („repreneur“)",
+  "rating": "A",
+  "size": "?"
+ },
+ {
+  "country": "IT",
+  "date": "2026-11-21",
+  "grades": "AAA",
+  "key": "DIGI:c9b07a223120ae84",
+  "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNZjVZSVdzclRUQXpOQ1lpd0lSUHVUbHBMbTNqRlQ5N3hyc0NEZ3lWMHBWQTZkNEFmZmVJWTRfTENJRWd6OGFJTTFuUy1vMmRnUnRGMzVVYnFtV2lhX3FVbElSWjd0RUhDaDhWVlJsckY1LWZaNW82STJJczhDWE1ucGloSUtfTTlUcVVuSUhzS1V4WXY3dUNOeVJocWR2b01qX1htQy1QdnFSRHJpZFp2VnRqWHVuOTJnRGpKNXFGb2laR0N2dkhEMw?oc=5",
+  "module": "DIGITAL",
+  "name": "GT Talent, ok CdA alla cessione del 100% di Cosmo Group al prezzo simbolico di 1",
+  "procedure": "💶 převzetí za symbolickou cenu – Tapie style („prezzo simbolico“)",
+  "rating": "A",
+  "size": "?"
  }
 ]
