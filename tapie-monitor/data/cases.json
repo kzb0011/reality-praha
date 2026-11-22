@@ -1616,5 +1616,65 @@
   "procedure": "💶 převzetí za symbolickou cenu – Tapie style („prezzo simbolico“)",
   "rating": "A",
   "size": "?"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-22",
+  "grades": "AAA",
+  "key": "APP:583353777:drop",
+  "link": "https://apps.apple.com/de/app/tchibo/id583353777?uo=4",
+  "module": "APP",
+  "name": "Tchibo",
+  "procedure": "pokles v EU žebříčcích z #15 na #69",
+  "rating": "B",
+  "size": "135 447 hodnocení v App Store (obchod DE)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-22",
+  "grades": "AAA",
+  "key": "APP:932832568:drop",
+  "link": "https://apps.apple.com/de/app/timp/id932832568?uo=4",
+  "module": "APP",
+  "name": "TIMP",
+  "procedure": "pokles v EU žebříčcích z #29 na #85",
+  "rating": "B",
+  "size": "36 513 hodnocení v App Store (obchod ES)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-22",
+  "grades": "AAA",
+  "key": "APP:1016903382:drop",
+  "link": "https://apps.apple.com/de/app/center-parcs/id1016903382?uo=4",
+  "module": "APP",
+  "name": "Center Parcs",
+  "procedure": "pokles v EU žebříčcích z #8 na #65",
+  "rating": "B",
+  "size": "14 265 hodnocení v App Store (obchod FR)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-22",
+  "grades": "AAA",
+  "key": "APP:1501827013:drop",
+  "link": "https://apps.apple.com/de/app/hansefit/id1501827013?uo=4",
+  "module": "APP",
+  "name": "Hansefit",
+  "procedure": "pokles v EU žebříčcích z #34 na #99",
+  "rating": "B",
+  "size": "46 437 hodnocení v App Store (obchod DE)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-22",
+  "grades": "AAA",
+  "key": "APP:480883488:drop",
+  "link": "https://apps.apple.com/de/app/canvas-by-instructure/id480883488?uo=4",
+  "module": "APP",
+  "name": "Canvas by Instructure",
+  "procedure": "pokles v EU žebříčcích z #7 na #63",
+  "rating": "A",
+  "size": "36 513 hodnocení v App Store (obchod SE)"
  }
 ]
