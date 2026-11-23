@@ -45,6 +45,26 @@ ANALYSIS_ENABLED = True   # ke každému případu potenciál, rizika, doporuče
 APP_AAA_MIN_RATINGS = 10_000    # "hodně používaná" = aspoň tolik hodnocení (v EU obchodě, kde je v žebříčku)
 APP_MIN_AVG_RATING = 3.0        # průměrné hodnocení pod tím = rozbitá/mrtvá appka → vynechat
 APP_REQUIRE_FOCUS = False       # False = obor aplikace je jedno (jen ne hry/krypto)
+# „Ochrana“ (Bob 23. 11. 2026): AAA jen aplikace, které si člověk s AI sám neudělá –
+# stojí na datech/licenci, komunitě, hotovém obsahu nebo firemních zákaznících (B2B).
+# Prosté nástroje (zápis výdajů, poznámky, filtry fotek) AI snadno nahradí → max. B.
+APP_REQUIRE_MOAT = True
+APP_MOAT_WORDS = {
+    "data / licence": ["bank account", "open banking", "psd2", "sync with your bank", "bankkonto",
+                       "radar", "forecast", "předpověď", "wettervorhersage", "timetable", "jízdní řád",
+                       "fahrplan", "real-time", "realtime", "offline map", "navigation", "traffic",
+                       "live data", "satellite", "database of", "databáze"],
+    "komunita": ["community", "komunita", "gemeinschaft", "communauté", "marketplace", "buy and sell",
+                 "inzerát", "classified", "dating", "seznam", "meet new people", "members", "forum",
+                 "fórum", "friends", "social network", "chat with"],
+    "obsah": ["recipes", "recepty", "rezepte", "courses", "kurzy", "lessons", "lekce", "audiobooks",
+              "podcasts", "articles", "library of", "thousands of", "tisíce", "workouts", "exercises",
+              "guides", "průvodce"],
+    "B2B": ["for teams", "for business", "for companies", "pro firmy", "für unternehmen",
+            "employees", "zaměstnanc", "mitarbeiter", "invoic", "faktur", "rechnung", "crm",
+            "point of sale", "pokladna", "your clients", "your customers", "booking system",
+            "rezervační systém", "shift", "fleet", "inventory", "sklad"],
+}
 # Horní hranice: aplikace s víc hodnoceními jsou globální giganti (ChatGPT, Outlook…),
 # které nikdo neprodá – to nejsou příležitosti.
 APP_MAX_RATINGS = 3_000_000
@@ -276,14 +296,14 @@ NEWS_MAX_AGE_DAYS = 3   # starší zprávy ignorovat
 # EU trh bez Bulharska, Rumunska a Polska (kódy obchodů App Store):
 APP_COUNTRIES = ["de", "fr", "it", "es", "nl", "be", "at", "se", "dk", "fi", "ie", "pt",
                  "cz", "sk", "hu", "gr", "si", "hr", "lu", "ee", "lv", "lt", "cy", "mt"]
-APP_GENRES = {          # číslo kategorie Apple -> název (10 kategorií = běh do ~15 min)
+APP_GENRES = {          # číslo kategorie Apple -> název (9 kategorií = běh do ~15 min)
     6017: "Education",
     6012: "Lifestyle",
-    6007: "Productivity",
     6024: "Shopping",
     6000: "Business",
     6013: "Health & Fitness",
-    6008: "Photo & Video",
+    6005: "Social Networking",  # Bob 23. 11.: komunita – lidi tam jsou kvůli ostatním
+    # Productivity a Photo & Video vyřazeny (23. 11.): jednoduché nástroje, AI je nahradí.
     6003: "Travel",
     # Utilities a Food & Drink vyřazeny (Bob 2.11.2026): baterky, QR čtečky, počasí
     # nemají hodnotu k převzetí; jídlo = gastro, které Bob nechce.
