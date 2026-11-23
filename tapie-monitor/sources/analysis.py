@@ -100,6 +100,9 @@ def analyze_app(c):
     if "aktualizace" in sig:
         potential.append("Aplikace bez vývoje, ale s velkou bází – vlastník ji nejspíš "
                          "neprioritizuje; vhodné pro nabídku na odkup aktiv (kód, značka, uživatelé).")
+    if c.get("moat"):
+        potential.append("Ochrana proti AI-kopii: " + ", ".join(c["moat"]) + " – uživatel si to "
+                         "sám nepostaví, hodnota nezmizí s levnějším vývojem.")
     potential.append(f"Uživatelská základna: {c.get('size')}. Monetizace přes předplatné "
                      "lze obnovit (paywall, cenové testy, ASO).")
     risks = [

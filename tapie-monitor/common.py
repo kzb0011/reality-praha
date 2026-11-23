@@ -93,7 +93,9 @@ def grades_firma(proc_pts, cat, size_pts, liab_eur=None):
 def grades_app(sig_pts, focus_pts, ratings):
     g1 = "A" if sig_pts >= 3 else "B" if sig_pts == 2 else "C"
     # zaměření je jedno (uživatel 2.11.) – druhá známka = není hra/krypto (ty se vyřazují dřív)
-    g2 = "A" if not config.APP_REQUIRE_FOCUS or focus_pts >= 2 else "C"
+    need = config.APP_REQUIRE_FOCUS or getattr(config, "APP_REQUIRE_MOAT", False)
+    # APP_REQUIRE_MOAT: bez ochrany (data/komunita/obsah/B2B) jen B → do AAA se nedostane
+    g2 = "A" if not need or focus_pts >= 2 else "B"
     if ratings > config.APP_MAX_RATINGS:
         g3 = "C"  # globální gigant – nekoupíš
     else:

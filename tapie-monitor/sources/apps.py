@@ -155,6 +155,18 @@ def dead_product(app):
     return bool(upd) and upd < cut
 
 
+def find_moat(app):
+    """Čím je aplikace chráněná proti „udělám si to sám s AI“ (data, komunita, obsah, B2B)."""
+    genre = app.get("primaryGenreName", "")
+    t = f"{app.get('trackName', '')} {app.get('description', '')}".lower()
+    found = [label for label, words in config.APP_MOAT_WORDS.items() if any(w in t for w in words)]
+    if genre in ("Weather", "Navigation") and "data / licence" not in found:
+        found.append("data / licence")
+    if genre == "Social Networking" and "komunita" not in found:
+        found.append("komunita")
+    return found
+
+
 def _excluded(text, genre):
     t = (text or "").lower()
     if genre in config.APP_EXCLUDED_GENRES:
@@ -189,7 +201,11 @@ def _app_case(app, signal, sig_pts, chart_label=""):
     genre = app.get("primaryGenreName", "?")
     text = f"{app.get('trackName', '')} {genre} {app.get('description', '')[:400]}"
     size_pts = 3 if ratings >= config.APP_AAA_MIN_RATINGS else 2 if ratings >= config.APP_MIN_RATINGS else 1
-    focus = 2 if genre == "Education" or any(k in text.lower() for k in ("language", "learn")) else 1
+    moat = find_moat(app)
+    if getattr(config, "APP_REQUIRE_MOAT", False):
+        focus = 2 if moat else 1
+    else:
+        focus = 2 if genre == "Education" or any(k in text.lower() for k in ("language", "learn")) else 1
     points = sig_pts + size_pts + focus
     upd = (app.get("currentVersionReleaseDate") or "")[:10] or "?"
     seller = app.get("sellerName") or app.get("artistName") or "?"
@@ -209,11 +225,13 @@ def _app_case(app, signal, sig_pts, chart_label=""):
         "link": app.get("trackViewUrl"),
         "links": [("kdo tam dělá M&A (LinkedIn)", li)],
         "notes": [f"Vývojář: {app.get('artistName', '?')}", f"Poslední aktualizace: {upd}",
-                  f"Hodnocení: {app.get('averageUserRating', '?')}"] +
+                  f"Hodnocení: {app.get('averageUserRating', '?')}",
+                  "🛡️ Ochrana proti AI-kopii: " + (", ".join(moat) if moat else "žádná (prostý nástroj)")] +
                  ([f"Žebříček: {chart_label}"] if chart_label else []),
         "points": points,
         "rating": rate(points, "APP"),
         "grades": grades_app(sig_pts, focus, ratings),
+        "moat": moat,
     }
 
 
