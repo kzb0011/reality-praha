@@ -156,11 +156,12 @@ def merge_state(our_state_path, our_cases_path):
         ti.setdefault("cases", {}).setdefault(sz, c)
     if ours.get("apps", {}).get("best_day", "") >= theirs.get("apps", {}).get("best_day", ""):
         theirs["apps"] = ours.get("apps", theirs.get("apps", {}))
-    theirs["weekly_sent"] = max(theirs.get("weekly_sent", ""), ours.get("weekly_sent", ""))
     # Čekající případy: strana s novějším odesláním přehledu je směrodatná; z druhé strany
     # přidej jen případy zařazené PO tom odeslání (jinak by se poslaly podruhé).
+    # Pozor: data odeslání číst PŘED přepsáním theirs["weekly_sent"] (chyba 24. 11.).
     t_ws, o_ws = theirs.get("weekly_sent", ""), ours.get("weekly_sent", "")
     newest_ws = max(t_ws, o_ws)
+    theirs["weekly_sent"] = newest_ws
     base, other = (theirs, ours) if t_ws >= o_ws else (ours, theirs)
     pend = {c.get("key"): c for c in base.get("pending", [])}
     for c in other.get("pending", []):
