@@ -1700,5 +1700,41 @@
   "procedure": "konkurs",
   "rating": "A",
   "size": "10–19 zaměstnanců"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-24",
+  "grades": "AAA",
+  "key": "APP:921588809:drop",
+  "link": "https://apps.apple.com/de/app/tractive-gps-hunde-katzen/id921588809?uo=4",
+  "module": "APP",
+  "name": "Tractive GPS - Hunde / Katzen",
+  "procedure": "pokles v EU žebříčcích z #12 na #68",
+  "rating": "A",
+  "size": "48 787 hodnocení v App Store (obchod DE)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-24",
+  "grades": "AAA",
+  "key": "APP:985799982:drop",
+  "link": "https://apps.apple.com/de/app/choose-lifestyle-et-cadeaux/id985799982?uo=4",
+  "module": "APP",
+  "name": "Choose : lifestyle et cadeaux",
+  "procedure": "pokles v EU žebříčcích z #21 na #74",
+  "rating": "A",
+  "size": "31 090 hodnocení v App Store (obchod FR)"
+ },
+ {
+  "country": "NL",
+  "date": "2026-11-24",
+  "grades": "AAA",
+  "key": "DIGI:6b730f827c314d7d",
+  "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQVTRvY3JFTFpPM3lrY3NZaDhKYTVrUjJmTU5FdC04NHd2c2dsNHJiTEFUNkV4WjlXX0pQQUJUcUVxMGNwWVhVX0doWFJNYnZtbm4tRjZiRjFDRjJ6NHFfSWFyaFQzM3RjRm5DNkdTRzJnaDBjTXV6ekluQ2tIMk9lTl9yamktMVBrMmpUMUxsXzFnZWx4d2FaeXljLUE0TEJWcVdfQ1lYLTlYYzZKX3c?oc=5",
+  "module": "DIGITAL",
+  "name": "Failliet Paprika maakt online doorstart met internationale ambities",
+  "procedure": "správce hledá kupce („doorstart“)",
+  "rating": "A",
+  "size": "?"
  }
 ]
