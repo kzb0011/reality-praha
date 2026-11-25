@@ -1736,5 +1736,53 @@
   "procedure": "správce hledá kupce („doorstart“)",
   "rating": "A",
   "size": "?"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-25",
+  "grades": "AAA",
+  "key": "APP:525441365:drop",
+  "link": "https://apps.apple.com/de/app/rauchen-aufh%C3%B6ren-kwit/id525441365?uo=4",
+  "module": "APP",
+  "name": "Rauchen aufhören - Kwit",
+  "procedure": "pokles v EU žebříčcích z #16 na #66",
+  "rating": "A",
+  "size": "30 610 hodnocení v App Store (obchod FR)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-25",
+  "grades": "AAA",
+  "key": "APP:1189568780:drop",
+  "link": "https://apps.apple.com/de/app/bodyfast-intervallfasten-ki/id1189568780?uo=4",
+  "module": "APP",
+  "name": "BodyFast: Intervallfasten KI",
+  "procedure": "pokles v EU žebříčcích z #16 na #73",
+  "rating": "A",
+  "size": "22 858 hodnocení v App Store (obchod IT)"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-25",
+  "grades": "AAA",
+  "key": "APP:1273866794:drop",
+  "link": "https://apps.apple.com/de/app/pony-bike-scooter-sharing/id1273866794?uo=4",
+  "module": "APP",
+  "name": "Pony - Bike & Scooter Sharing",
+  "procedure": "pokles v EU žebříčcích z #13 na #63",
+  "rating": "A",
+  "size": "23 225 hodnocení v App Store (obchod FR)"
+ },
+ {
+  "country": "FR",
+  "date": "2026-11-25",
+  "grades": "AAA",
+  "key": "DIGI:bc8ee76023c83ee2",
+  "link": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxOQ0tWRlRzQTI4TWJ0N0VIdU91cjdKcmJURkhIS3FaaENKZEF0a1dvT2N1VTdUakpsQmVudm41NjZkMVRMU1NDSm1oVEN1Sl9teWdaV21KUkpOU3BTcmJoX2luZmxwaXEwMFlKaTh1cjc5QW1vcFJBRWhtOUlNWFNYb3JCZGVIZExMd2w4MXVieXZubHJaM01naGtEbnI0NVYya2ZYSHVteFlhQXFHeTFhdHpyWlFKMmZRcVRueEJwTGp1U3NEcVZ2LTZzUXU4ZGVTX21EemFYUG02NmtXenhJ?oc=5",
+  "module": "DIGITAL",
+  "name": "Office Depot, c'est fini, faute de repreneur, l'enseigne ferme ses 27 magasins e",
+  "procedure": "správce hledá kupce („repreneur“)",
+  "rating": "A",
+  "size": "?"
  }
 ]
