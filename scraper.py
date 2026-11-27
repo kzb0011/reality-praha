@@ -102,6 +102,8 @@ RK_WORDS = [
     r"číslo zakázky", r"id zakázky", r"evidenční číslo", r"kontaktujte (makléře|naši)",
     r"rezervační (poplatek|smlouv)", r"právní servis", r"financování zajistíme", r"hypoteční poradenství",
     r"výhradn\w* (zastoupen|smlouv|prodej|nabíd|zprostředk)", r"v zastoupení (majitel|vlastník)",
+    r"v nabídce (mám|máme)? ?\d+ (byt|bytů|byty|nemovitost)", r"(mám|máme) (v nabídce |k dispozici )?(další|více|\d+) (byt|bytů|byty)",
+    r"naše domy", r"výrob\w* (dřevo)?stav|dřevostavb\w* na klíč",
     r"re/?max", r"century ?21", r"m ?& ?m reality", r"m ?& ?m\b", r"maxima reality", r"svoboda ?& ?williams",
     r"engel ?& ?v[oö]lkers", r"lexxus", r"bidli", r"realitymix", r"sting", r"mm reality",
     r"reality\.cz", r"realit[ay]\b.*s\.r\.o", r"s\.r\.o\.", r"\bs\.? ?r\.? ?o\b", r"\bspol\.", r"a\.s\.", r"properties", r"real estate",
@@ -115,11 +117,11 @@ RK_SELLERS = [
     "ladislav burian", "realbrána", "realbrana",
     "ideální nájemce", "dumrealit", "jan paschke", "paschke", "hvb real estate", "finpos", "aleš doubek", "makers reality", "gepard",
     "vlasta marklová", "žalmánek", "váš konzultant realit", "realityspolu", "reality spolu", "petráčková",
-    "next reality", "karel zajac", "zoom", "bohemian estates", "broker consulting", "pavelková", "jiří beneš", "petr schejbal", "vladimír kremel", "vladimir kremel", "jaroslav čermák", "jaroslav cermak", "femida", "martin petlach", "adam horák", "adam horak", "marek bijok", "karel budín", "karel budin", "martin kršňák", "martin krsnak", "luboš rezek", "lubos rezek", "luboš řezek", "jana barčuková", "jana barcukova", "tomáš tvoroch", "tomas tvoroch", "tomáš tvaroh", "rk evropa", "bohumír kocián", "bohumir kocian", "lukáš kuchař", "lukas kuchar", "dyrma", "martin lubas",
+    "next reality", "karel zajac", "zoom", "bohemian estates", "broker consulting", "pavelková", "jiří beneš", "petr schejbal", "vladimír kremel", "vladimir kremel", "jaroslav čermák", "jaroslav cermak", "femida", "martin petlach", "adam horák", "adam horak", "marek bijok", "karel budín", "karel budin", "martin kršňák", "martin krsnak", "luboš rezek", "lubos rezek", "luboš řezek", "jana barčuková", "jana barcukova", "tomáš tvoroch", "tomas tvoroch", "tomáš tvaroh", "rk evropa", "bohumír kocián", "bohumir kocian", "lukáš kuchař", "lukas kuchar", "dyrma", "martin lubas", "karel michel",
 ]
 
 # Bazoš ID prodávajícího (idphone) nahlášených realitek – chytí je i pod jiným jménem
-RK_SELLER_IDS = {"19659032", "19127202", "19056743", "19006547", "19623771", "21100492", "19135889", "19165354", "19117937", "19208053", "19151196", "19194521", "19057417", "19058815", "19135727", "19180520", "19093549", "19135726", "19204461", "19115807"}   # Pavelková, Jiří Beneš, TM (2×), Petr Schejbal, Vladimír Kremel, Jaroslav Čermák, Femida, Martin Petlach, Adam Horák, Marek Bijok, Karel Budín („Martina“), Martin Kršňák, Luboš Rezek, Jana Barčuková, Tomáš Tvoroch (RK Evropa), Bohumír Kocián, Lukáš Kuchař, Oleksandr Dyrma, Martin Lubas
+RK_SELLER_IDS = {"19659032", "19127202", "19056743", "19006547", "19623771", "21100492", "19135889", "19165354", "19117937", "19208053", "19151196", "19194521", "19057417", "19058815", "19135727", "19180520", "19093549", "19135726", "19204461", "19115807", "19112569"}   # Pavelková, Jiří Beneš, TM (2×), Petr Schejbal, Vladimír Kremel, Jaroslav Čermák, Femida, Martin Petlach, Adam Horák, Marek Bijok, Karel Budín („Martina“), Martin Kršňák, Luboš Rezek, Jana Barčuková, Tomáš Tvoroch (RK Evropa), Bohumír Kocián, Lukáš Kuchař, Oleksandr Dyrma, Martin Lubas, Karel Michel
 # Krátká jména RK – musí se shodovat s celým jménem prodávajícího (v textu se nehledají)
 RK_SELLERS_EXACT = {"tm"}
 
