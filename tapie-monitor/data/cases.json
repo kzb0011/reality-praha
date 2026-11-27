@@ -1808,5 +1808,17 @@
   "procedure": "insolvence / prodej / ukončení („for sale“)",
   "rating": "A",
   "size": "10 zaměstnanců, tržby/ARR ≈ 2,0 mil,"
+ },
+ {
+  "country": "?",
+  "date": "2026-11-27",
+  "grades": "AAA",
+  "key": "APP:426007025:drop",
+  "link": "https://apps.apple.com/de/app/calconvert-w%C3%A4hrungsrechner/id426007025?uo=4",
+  "module": "APP",
+  "name": "CalConvert: Währungsrechner",
+  "procedure": "pokles v EU žebříčcích z #14 na #82",
+  "rating": "A",
+  "size": "31 446 hodnocení v App Store (obchod FR)"
  }
 ]
