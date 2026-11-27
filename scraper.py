@@ -93,7 +93,7 @@ MOTIVATED_WEEKDAY, MOTIVATED_HOUR_UTC = 0, 6   # pondělí od 7:00 (zima) / 8:00
 DIGEST_HOUR_UTC = 16    # denní souhrn vyřazených (16 UTC = 18:00 v létě / 17:00 v zimě)
 MAX_DETAILS = 100       # max. detailů inzerátů načtených za jeden běh (šetrnost k Bazoši)
 RK_MIN_LISTINGS = 3     # od tolika různých inzerátů je prodávající podezřelý (❔ Možná RK)
-RK_SURE_LISTINGS = 6    # od tolika různých inzerátů = realitka (vyřadit)
+RK_SURE_LISTINGS = 3    # od tolika různých inzerátů = realitka (vyřadit)
 
 RK_WORDS = [
     r"realitn\w* kancel", r"makl[eé]ř", r"provize", r"zprostředk", r"exkluzivně", r"exkluzivn\w* (nabíd|nabíz|prodej|zastoupen|smlouv)",
@@ -108,8 +108,7 @@ RK_WORDS = [
 ]
 # Slova v TEXTU, která samy o sobě inzerát nevyřadí – pošle se jako ❔ nejistý (Bob 14. 11.: raději víc inzerátů).
 # Silné znaky (výhradní zastoupení, ev. č., ID nabídky, názvy RK, weby realitek, s.r.o.) dál vyřazují.
-RK_TEXT_SOFT = [r"provize", r"makl", r"zprostředk", r"realitn", r"exkluziv", r"naše společnost", r"naše kancelář",
-                r"kontaktujte", r"rezervační", r"právní servis", r"financování", r"hypoteční", r"poplatek za"]
+RK_TEXT_SOFT = []   # Bob 27. 11.: cokoli, co ukazuje na realitku, vyřadit (dřív provize/makléř… jen ❔)
 
 # Konkrétní realitky / makléři, které chceš vždy vyřadit (stačí část jména, malá písmena)
 RK_SELLERS = [
@@ -389,7 +388,7 @@ def classify(item, seller_counts):
     st, why = _classify(item, seller_counts)
     text = " ".join(str(item.get(k) or "") for k in ("title", "desc", "desc_full")).lower()
     if st != "rk" and any(re.search(w, text) for w in NO_RK_WORDS):
-        return "nejiste", "majitel nechce RK"
+        return "rk", "majitel nechce RK"          # Bob 27. 11.: tyto nechce (zpět vyřazovat)
     return st, why
 
 

@@ -62,11 +62,11 @@ Posílá se jen `soukromy` a `nejiste` (`SELLER_FILTER = "rk_ven"`). Vyřadí se
 - jméno je na seznamu `RK_SELLERS` (Bobův seznam – M&M, Paschke, HVB, Finpos, Next Reality, ZOOM, Bohemian Estates, Ideální nájemce,
   Dumrealit, Ladislav Burian/REALBrána, Pavelková, Jiří Beneš, Petr Schejbal, Vladimír Kremel, Jaroslav Čermák, Femida, Martin Petlach, Adam Horák, Marek Bijok, Karel Budín, Martin Kršňák, Luboš Rezek, Jana Barčuková, Tomáš Tvoroch (RK Evropa), Bohumír Kocián, Lukáš Kuchař, Oleksandr Dyrma, Martin Lubas…; jméno obsahující samostatné „RK“/„Reality“/„infolinka“ = RK; krátká jména jako „TM" v `RK_SELLERS_EXACT` (shoda celého jména); navíc `RK_SELLER_IDS` = Bazoš idphone nahlášených RK, chytí je i pod jiným jménem; když Bob nahlásí další, přidej sem),
 - jméno obsahuje firmu (`Jméno - Firma`, ale „Jméno - Praha“ apod. je místo – `PLACE_RE`, čárku, s.r.o./spol., `…Real/Reality/Estate/Invest`, `REAL…`),
-- ~~text obsahuje `NO_RK_WORDS`~~ – od 16. 11. „RK nevolat" (i „R.K nevolat"…) inzerát **nevyřadí**, přijde s ⚠️ „Majitel v inzerátu píše, že nechce realitky" (Bob: posílat vše),
+- text obsahuje `NO_RK_WORDS` („RK nevolat", „R.K nevolat"… – **vyřadit**; Bob 27. 11. vrátil, 16.–27. 11. se zkoušelo posílat s ⚠️),
 - text obsahuje podpis „RK Jméno Příjmení“ (např. „RK Karel Budín“),
-- text obsahuje silné RK výrazy (`RK_WORDS`; **jen „měkká“ slova z `RK_TEXT_SOFT` – provize, makléř, zprostředkování, realitní kancelář, exkluzivně… – inzerát nevyřadí,
-  pošle se jako ❔ „Možná RK – v textu …“** (Bob 14. 11.: raději víc inzerátů); vyřadí jen silné: výhradní zastoupení, ev. č., ID nabídky, web realitky, s.r.o.…; provize, makléř, zprostředkuje, výhradní zastoupení, ID nabídky, ev. č., …webrealit.cz…),
-- stejný prodávající má ≥ 6 **různých** inzerátů (`RK_SURE_LISTINGS`; 3–5 = jen ❔ „Možná RK – má N inzerátů“, Bob 16. 11.;
+- text obsahuje RK výrazy (`RK_WORDS` – **všechny vyřazují**, `RK_TEXT_SOFT` je prázdný; Bob 27. 11.: „jakmile to inzeruje realitka, nechci“;
+  14.–27. 11. se zkoušelo měkká slova posílat jako ❔); provize, makléř, zprostředkuje, výhradní zastoupení, ID nabídky, ev. č., …webrealit.cz…),
+- stejný prodávající má ≥ 3 **různé** inzeráty (`RK_SURE_LISTINGS` = 3, Bob 27. 11.; 16.–27. 11. bylo 6 a 3–5 jen ❔;
   znovu vložený stejný inzerát se počítá jednou),
   nebo byl dříve vyřazen (paměť `RK_KNOWN`, `RK_PHONES` – **jen ze `STRONG_RK_REASONS`**: seznam, ID, jméno firmy; ne z „dříve vyřazen“
   ani ze slova v textu, aby se chyba neřetězila).
